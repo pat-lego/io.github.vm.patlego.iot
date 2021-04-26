@@ -11,8 +11,7 @@
   <packaging>pom</packaging>
   <name>IoT Client</name>
   <modules>
-    <module>feature</module>
-    <module>core</module>
+     <module>core</module>
   </modules>
 
   <dependencyManagement>
