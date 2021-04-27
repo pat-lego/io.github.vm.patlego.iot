@@ -1,8 +1,12 @@
 package io.github.vm.patlego.iot;
 
+import java.io.IOException;
 import java.util.Arrays;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
+import io.github.vm.patlego.iot.config.Config;
 import io.github.vm.patlego.iot.config.ConfigFile;
 import io.github.vm.patlego.iot.config.ConfigReader;
 
@@ -13,9 +17,18 @@ import io.github.vm.patlego.iot.config.ConfigReader;
 public class Main {
 
     private static final String CONFIG_PATH = "--config";
-    public static void main(String[] args) {
+    
+    // Map used to keep track of the threads that are active in the system
+    private Map<String, Boolean> processMap = new HashMap<String, Boolean>();
+
+    public static void main(String[] args) throws IOException {
       String path = Main.getConfigFilePath(args);
       ConfigFile configFile = ConfigReader.getConfigFile(path, MainConfigFile.class);
+
+      
+      for (Config config : configFile.getConfigs()) {
+        // Parse the config and deploy the necessary threads
+      }
       
     }
 

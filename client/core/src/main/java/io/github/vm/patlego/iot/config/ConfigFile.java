@@ -1,10 +1,12 @@
 package io.github.vm.patlego.iot.config;
 
-import java.util.List;
+import java.util.Set;
 
 public interface ConfigFile {
     
-    public List<? extends Config> getConfigs();
+    public Set<? extends Config> getConfigs();
+    
+    public Boolean haltSystem();
 
     public Config getConfig(String name);
 }

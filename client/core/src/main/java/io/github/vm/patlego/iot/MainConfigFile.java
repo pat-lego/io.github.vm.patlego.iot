@@ -1,16 +1,19 @@
 package io.github.vm.patlego.iot;
 
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 import io.github.vm.patlego.iot.config.Config;
 import io.github.vm.patlego.iot.config.ConfigFile;
 
 public class MainConfigFile implements ConfigFile {
 
-    private List<MainConfig> configs;
-
+    private HashSet<MainConfig> configs;
+    private Boolean halt;
+    
     @Override
-    public List<MainConfig> getConfigs() {
+    public Set<MainConfig> getConfigs() {
         return this.configs;
     }
 
@@ -27,6 +30,11 @@ public class MainConfigFile implements ConfigFile {
         }
 
         return null;
+    }
+
+    @Override
+    public Boolean haltSystem() {
+        return this.halt;
     }
     
 }

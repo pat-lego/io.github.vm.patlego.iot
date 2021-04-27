@@ -20,4 +20,10 @@ public interface Config {
      */
     public System getSystem();
 
+    /**
+     * Determines if this module is enabled for the given system
+     * @return
+     */
+    public Boolean isEnabled();
+
 }
