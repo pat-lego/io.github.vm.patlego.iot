@@ -4,7 +4,7 @@ import java.util.List;
 
 public interface ConfigFile {
     
-    public List<Config> getConfigs();
+    public List<? extends Config> getConfigs();
 
     public Config getConfig(String name);
 }
