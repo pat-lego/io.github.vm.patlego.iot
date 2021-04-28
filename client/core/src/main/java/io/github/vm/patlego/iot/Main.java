@@ -20,17 +20,10 @@ public class Main {
 
     private static final String CONFIG_PATH = "--config";
 
-    // Map used to keep track of the threads that are active in the system
-    private Map<String, Boolean> processMap = new HashMap<String, Boolean>();
-
     public static void main(String[] args) throws IOException, ClassNotFoundException, NoSuchMethodException, SecurityException, InstantiationException, IllegalAccessException, IllegalArgumentException, InvocationTargetException {
         String path = Main.getConfigFilePath(args);
-        ConfigFile configFile = ConfigReader.getConfigFile(path, MainConfigFile.class);
-
-        ThreadManager manager = new ThreadManager();
-
-        // Load all the initial threads into memory
-        manager.init(configFile);
+        ThreadManager manager = new ThreadManager(path);
+        manager.run();
     }
 
     public static String getConfigFilePath(String[] args) {
