@@ -2,6 +2,7 @@ package io.github.vm.patlego.iot;
 
 import java.util.HashSet;
 import java.util.List;
+import java.util.Optional;
 import java.util.Set;
 
 import io.github.vm.patlego.iot.config.Config;
@@ -34,7 +35,7 @@ public class MainConfigFile implements ConfigFile {
 
     @Override
     public Boolean haltSystem() {
-        return this.halt;
+        return Optional.ofNullable(this.halt).orElse(Boolean.TRUE);
     }
     
 }

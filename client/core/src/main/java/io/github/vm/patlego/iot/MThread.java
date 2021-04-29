@@ -8,12 +8,11 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import io.github.vm.patlego.iot.config.Config;
-import io.github.vm.patlego.iot.process.MThreadState;
+import io.github.vm.patlego.iot.threads.MThreadState;
 
 public abstract class MThread implements Runnable {
 
-    private MThreadState state = MThreadState.INITIALIZED;
-    
+    protected MThreadState state = MThreadState.INITIALIZED;
     protected int sleepTime = 50;
     protected Logger logger = LoggerFactory.getLogger(this.getClass());
     protected Config config;

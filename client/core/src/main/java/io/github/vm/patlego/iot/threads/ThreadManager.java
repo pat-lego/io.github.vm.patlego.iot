@@ -1,10 +1,13 @@
-package io.github.vm.patlego.iot.process;
+package io.github.vm.patlego.iot.threads;
 
 import java.io.IOException;
 import java.lang.reflect.Constructor;
 import java.lang.reflect.InvocationTargetException;
+import java.time.Duration;
+import java.time.Instant;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Optional;
 
 import io.github.vm.patlego.iot.MThread;
 import io.github.vm.patlego.iot.MainConfigFile;
@@ -22,17 +25,20 @@ public class ThreadManager {
     // Sleep for 5 seconds
     private int sleep = 5000;
 
-    public ThreadManager(String path) throws IOException {
+    private ClassLoader loader;
+
+    public ThreadManager(String path, ClassLoader loader) {
+        // Call the other constructor first
         this.path = path;
         this.clazz = MainConfigFile.class;
+        this.loader = loader;
     }
 
     private void init() throws ClassNotFoundException, NoSuchMethodException, SecurityException, InstantiationException,
             IllegalAccessException, IllegalArgumentException, InvocationTargetException, IOException {
         for (Config config : this.readFile(this.clazz).getConfigs()) {
-            Class<MThread> mThreadClass = (Class<MThread>) Class.forName(config.getThread());
+            Class<MThread> mThreadClass = (Class<MThread>) Class.forName(config.getThread(), true, loader);
             Constructor<MThread> mThreadConstructor = mThreadClass.getConstructor(Config.class);
-
             MThread mThread = mThreadConstructor.newInstance(config);
 
             MThreadDTO mThreadDTO = new MThreadDTO();
@@ -56,31 +62,55 @@ public class ThreadManager {
         return this.readFile(this.clazz).haltSystem();
     }
 
-    public void run() throws IOException, ClassNotFoundException, NoSuchMethodException, SecurityException,
+    public void run(long timeout) throws IOException, ClassNotFoundException, NoSuchMethodException, SecurityException,
             InstantiationException, IllegalAccessException, IllegalArgumentException, InvocationTargetException,
             InterruptedException {
+
+        Instant start = Instant.now();
         this.init();
-        while (Boolean.TRUE.equals(!this.haltSystem())) {
+
+        while (Boolean.TRUE.equals(!this.haltSystem()) && hasTimeoutElapsed(start, Instant.now(), timeout)) {
             ConfigFile configFile = this.readFile(this.clazz);
 
             for (Map.Entry<String, MThreadDTO> entry : this.threads.entrySet()) {
-                Config config = configFile.getConfig(entry.getValue().getmThread().getModule());
-                if (config != null) {
-                    if (config.isEnabled() && !(entry.getValue().getmThread().getState().equals(MThreadState.RUNNING)
-                            || entry.getValue().getmThread().getState().equals(MThreadState.FAILED))) {
-                        Thread thread = new Thread(entry.getValue().getmThread());
-                        entry.getValue().setThread(thread);
-                        thread.start();
-                    }
-
-                    if (!config.isEnabled() && entry.getValue().getmThread().getState().equals(MThreadState.RUNNING)) {
-                        entry.getValue().getThread().interrupt();
-                    }
-                }
+                MThreadDTO mThreadDTO = entry.getValue();
+                manageMThreadDTO(configFile, mThreadDTO);
             }
 
             Thread.sleep(this.sleep);
         }
+    }
+
+    private void manageMThreadDTO(ConfigFile configFile, MThreadDTO mThreadDTO) {
+        Config config = configFile.getConfig(mThreadDTO.getmThread().getModule());
+        if (config != null) {
+            if (config.isEnabled() && !(mThreadDTO.getmThread().getState().equals(MThreadState.RUNNING)
+                    || mThreadDTO.getmThread().getState().equals(MThreadState.FAILED))) {
+                Thread thread = new Thread(mThreadDTO.getmThread());
+                mThreadDTO.setThread(thread);
+                thread.start();
+            }
+
+            if (!config.isEnabled() && mThreadDTO.getmThread().getState().equals(MThreadState.RUNNING)) {
+                mThreadDTO.getThread().interrupt();
+            }
+        }
+    }
+
+    private boolean hasTimeoutElapsed(Instant start, Instant end, long timeout) {
+        if (this.validTime(timeout) == 0) {
+            return Boolean.TRUE;
+        }
+
+        return (Duration.between(start, end).toSeconds() < timeout);
+    }
+
+    private long validTime(long time) {
+        if (time <= 0) {
+            return 0;
+        }
+
+        return time;
     }
 
 }

@@ -1,5 +1,7 @@
 package io.github.vm.patlego.iot;
 
+import java.util.Optional;
+
 import io.github.vm.patlego.iot.config.Config;
 import io.github.vm.patlego.iot.config.System;
 
@@ -27,7 +29,7 @@ public class MainConfig implements Config {
 
     @Override
     public boolean isEnabled() {
-        return this.enable;
+        return Optional.ofNullable(this.enable).orElse(Boolean.FALSE);
     }
 
     @Override

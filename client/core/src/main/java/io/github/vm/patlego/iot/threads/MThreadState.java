@@ -1,4 +1,4 @@
-package io.github.vm.patlego.iot.process;
+package io.github.vm.patlego.iot.threads;
 
 public enum MThreadState {
     // MThread is currently executing

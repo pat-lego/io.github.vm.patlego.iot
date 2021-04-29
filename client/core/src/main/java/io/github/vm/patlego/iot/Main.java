@@ -5,7 +5,8 @@ import java.lang.reflect.InvocationTargetException;
 import java.util.Arrays;
 
 import java.util.List;
-import io.github.vm.patlego.iot.process.ThreadManager;
+
+import io.github.vm.patlego.iot.threads.ThreadManager;
 
 /**
  * Hello world!
@@ -19,8 +20,8 @@ public class Main {
             SecurityException, InstantiationException, IllegalAccessException, IllegalArgumentException,
             InvocationTargetException, InterruptedException {
         String path = Main.getConfigFilePath(args);
-        ThreadManager manager = new ThreadManager(path);
-        manager.run();
+        ThreadManager manager = new ThreadManager(path, Main.class.getClassLoader());
+        manager.run(0);
     }
 
     public static String getConfigFilePath(String[] args) {

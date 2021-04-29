@@ -1,4 +1,4 @@
-package io.github.vm.patlego.iot.process;
+package io.github.vm.patlego.iot.threads;
 
 import io.github.vm.patlego.iot.MThread;
 

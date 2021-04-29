@@ -1,5 +1,7 @@
 package io.github.vm.patlego.iot;
 
+import java.util.Optional;
+
 import io.github.vm.patlego.iot.config.Auth;
 import io.github.vm.patlego.iot.config.AuthType;
 
@@ -21,7 +23,7 @@ public class MainAuth implements Auth {
 
     @Override
     public Boolean isEncrypted() {
-       return this.isEncrypted;
+       return Optional.ofNullable(this.isEncrypted).orElse(Boolean.FALSE);
     }
     
 }
