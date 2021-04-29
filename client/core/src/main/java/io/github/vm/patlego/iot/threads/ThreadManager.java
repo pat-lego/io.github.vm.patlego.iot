@@ -7,7 +7,6 @@ import java.time.Duration;
 import java.time.Instant;
 import java.util.HashMap;
 import java.util.Map;
-import java.util.Optional;
 
 import io.github.vm.patlego.iot.MThread;
 import io.github.vm.patlego.iot.MainConfigFile;
@@ -62,10 +61,23 @@ public class ThreadManager {
         return this.readFile(this.clazz).haltSystem();
     }
 
-    public void run(long timeout) throws IOException, ClassNotFoundException, NoSuchMethodException, SecurityException,
+    /**
+     * Manages all the threads in the system
+     * 
+     * @param timeout Stop the system after a certain amount of time
+     * @throws IOException
+     * @throws ClassNotFoundException
+     * @throws NoSuchMethodException
+     * @throws SecurityException
+     * @throws InstantiationException
+     * @throws IllegalAccessException
+     * @throws IllegalArgumentException
+     * @throws InvocationTargetException
+     * @throws InterruptedException
+     */
+    public void run(long timeout) throws ClassNotFoundException, NoSuchMethodException, SecurityException,
             InstantiationException, IllegalAccessException, IllegalArgumentException, InvocationTargetException,
-            InterruptedException {
-
+            IOException, InterruptedException {
         Instant start = Instant.now();
         this.init();
 
