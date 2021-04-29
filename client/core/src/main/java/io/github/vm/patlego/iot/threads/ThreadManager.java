@@ -45,14 +45,18 @@ public class ThreadManager {
         ConfigFile configFile = this.readFile(this.clazz);
         for (Config config : configFile.getConfigs()) {
             try {
-                Class<MThread> mThreadClass = (Class<MThread>) Class.forName(config.getThread(), true, loader);
-                Constructor<MThread> mThreadConstructor = mThreadClass.getConstructor(Config.class);
-                MThread mThread = mThreadConstructor.newInstance(config);
+                if (threads.get(config.getThread()) == null) {
+                    Class<MThread> mThreadClass = (Class<MThread>) Class.forName(config.getThread(), true, loader);
+                    Constructor<MThread> mThreadConstructor = mThreadClass.getConstructor(Config.class);
+                    MThread mThread = mThreadConstructor.newInstance(config);
 
-                MThreadDTO mThreadDTO = new MThreadDTO();
-                mThreadDTO.setmThread(mThread);
+                    MThreadDTO mThreadDTO = new MThreadDTO();
+                    mThreadDTO.setmThread(mThread);
 
-                threads.put(config.getThread(), mThreadDTO);
+                    threads.put(config.getThread(), mThreadDTO);
+                } else {
+                    this.logger.info("The {} thread is already loaded skipping its instantiation since it is currently ", config.getThread());
+                }
             } catch (ClassNotFoundException e) {
                 this.logger.error("Was not able to load {} thread", config.getThread());
                 this.logger.error(e.getMessage(), e);
@@ -103,7 +107,9 @@ public class ThreadManager {
                 Thread.sleep(this.sleep);
             }
         } catch (InterruptedException e) {
-            this.logger.error("Thread has been interrupted most likely due to the thread being disabled or the system is turning down", e);
+            this.logger.error(
+                    "Thread has been interrupted most likely due to the thread being disabled or the system is turning down",
+                    e);
             Thread.currentThread().interrupt();
         }
     }
@@ -111,8 +117,7 @@ public class ThreadManager {
     private void manageMThreadDTO(ConfigFile configFile, MThreadDTO mThreadDTO) {
         Config config = configFile.getConfig(mThreadDTO.getmThread().getModule());
         if (config != null) {
-            if (config.isEnabled() && !(mThreadDTO.getmThread().getState().equals(MThreadState.RUNNING)
-                    || mThreadDTO.getmThread().getState().equals(MThreadState.FAILED))) {
+            if (config.isEnabled() && mThreadDTO.getmThread().getState().equals(MThreadState.INITIALIZED)) {
                 Thread thread = new Thread(mThreadDTO.getmThread());
                 mThreadDTO.setThread(thread);
                 thread.start();
