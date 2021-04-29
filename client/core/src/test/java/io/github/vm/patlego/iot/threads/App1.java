@@ -1,12 +1,13 @@
 package io.github.vm.patlego.iot.threads;
 
 import io.github.vm.patlego.iot.MThread;
+import io.github.vm.patlego.iot.MainConfigLog;
 import io.github.vm.patlego.iot.config.Config;
 
 public class App1 extends MThread {
 
     public App1(Config config) {
-        super(config);
+        super(config, new MainConfigLog());
     }
 
     @Override

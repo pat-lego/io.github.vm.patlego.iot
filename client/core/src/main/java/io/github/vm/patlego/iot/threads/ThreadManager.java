@@ -23,22 +23,28 @@ public class ThreadManager {
     private String path;
     private Class<? extends ConfigFile> clazz;
     private ClassLoader loader;
-    private Logger logger = LoggerFactory.getLogger(this.getClass());
+    private Logger logger;
 
     // Sleep for 5 seconds
     private int sleep = 5000;
 
-
-    public ThreadManager(String path, ClassLoader loader) {
+    public ThreadManager(String path, ClassLoader loader) throws IOException {
         this.path = path;
         this.clazz = MainConfigFile.class;
         this.loader = loader;
+        this.loadLogger();
     }
 
-    private void init(ConfigFile configFile) throws NoSuchMethodException, SecurityException, InstantiationException,
-            IllegalAccessException, IllegalArgumentException, InvocationTargetException, IOException {
-        try {
-            for (Config config : configFile.getConfigs()) {
+    private void loadLogger() throws IOException {
+        if (this.logger == null) {
+            this.logger = this.readFile(this.clazz).getLogConfig().getLogger();
+        }
+    }
+
+    private void init() throws IOException {
+        ConfigFile configFile = this.readFile(this.clazz);
+        for (Config config : configFile.getConfigs()) {
+            try {
                 Class<MThread> mThreadClass = (Class<MThread>) Class.forName(config.getThread(), true, loader);
                 Constructor<MThread> mThreadConstructor = mThreadClass.getConstructor(Config.class);
                 MThread mThread = mThreadConstructor.newInstance(config);
@@ -47,9 +53,17 @@ public class ThreadManager {
                 mThreadDTO.setmThread(mThread);
 
                 threads.put(config.getThread(), mThreadDTO);
+            } catch (ClassNotFoundException e) {
+                this.logger.error("Was not able to load {} thread", config.getThread());
+                this.logger.error(e.getMessage(), e);
+            } catch (NoSuchMethodException | SecurityException e) {
+                this.logger.error("Was not able to construct the constructor for {} thread", config.getThread());
+                this.logger.error(e.getMessage(), e);
+            } catch (InvocationTargetException | InstantiationException | IllegalAccessException
+                    | IllegalArgumentException e) {
+                this.logger.error("Was not able to instantiate the given {} thread", config.getThread());
+                this.logger.error(e.getMessage(), e);
             }
-        } catch (ClassNotFoundException e) {
-
         }
     }
 
@@ -70,31 +84,27 @@ public class ThreadManager {
     /**
      * Manages all the threads in the system
      * 
-     * @throws IOException
-     * @throws NoSuchMethodException
-     * @throws SecurityException
-     * @throws InstantiationException
-     * @throws IllegalAccessException
-     * @throws IllegalArgumentException
-     * @throws InvocationTargetException
-     * @throws InterruptedException
+     * @throws IOException - could not locate config file
      */
-    public void run() throws NoSuchMethodException, SecurityException, InstantiationException,
-            IllegalAccessException, IllegalArgumentException, InvocationTargetException, IOException,
-            InterruptedException {
-        Instant start = Instant.now();
-        ConfigFile configFile = this.readFile(MainConfigFile.class);
-        this.init(configFile);
+    public void run() throws IOException {
+        try {
+            Instant start = Instant.now();
+            ConfigFile configFile = this.readFile(MainConfigFile.class);
+            this.init();
 
-        while (Boolean.TRUE.equals(!this.haltSystem()) && hasTimeoutElapsed(start, Instant.now(), configFile)) {
-            configFile = this.readFile(this.clazz);
+            while (Boolean.TRUE.equals(!this.haltSystem()) && hasTimeoutElapsed(start, Instant.now(), configFile)) {
+                configFile = this.readFile(this.clazz);
 
-            for (Map.Entry<String, MThreadDTO> entry : this.threads.entrySet()) {
-                MThreadDTO mThreadDTO = entry.getValue();
-                manageMThreadDTO(configFile, mThreadDTO);
+                for (Map.Entry<String, MThreadDTO> entry : this.threads.entrySet()) {
+                    MThreadDTO mThreadDTO = entry.getValue();
+                    manageMThreadDTO(configFile, mThreadDTO);
+                }
+
+                Thread.sleep(this.sleep);
             }
-
-            Thread.sleep(this.sleep);
+        } catch (InterruptedException e) {
+            this.logger.error("Thread has been interrupted most likely due to the thread being disabled or the system is turning down", e);
+            Thread.currentThread().interrupt();
         }
     }
 
