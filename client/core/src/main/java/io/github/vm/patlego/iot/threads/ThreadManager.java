@@ -21,12 +21,12 @@ public class ThreadManager {
 
     private Map<String, MThreadDTO> threads = new HashMap<>();
     private String path;
-    private Class<? extends ConfigFile> clazz;
     private ClassLoader loader;
     private Logger logger;
 
+    protected Class<? extends ConfigFile> clazz;
     // Sleep for 5 seconds
-    private int sleep = 5000;
+    protected int sleep = 5000;
 
     public ThreadManager(String path, ClassLoader loader) throws IOException {
         this.path = path;
