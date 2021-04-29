@@ -1,0 +1,34 @@
+{
+    "configs": [
+        {
+            "module": "sensor1",
+            "thread": "io.github.vm.patlego.iot.threads.App1",
+            "enable": true,
+            "system": {
+                "url": "http://localhost:8181/talk/to/me",
+                "hasAuth": true,
+                "auth": {
+                    "authType": "BASIC",
+                    "token": "12345",
+                    "isEncrypted": false
+                }
+            }
+        },
+        {
+            "module": "sensor2",
+            "thread": "io.github.vm.patlego.iot.threads.App2",
+            "enable": true,
+            "system": {
+                "url": "http://localhost:8181/talk/to/me",
+                "hasAuth": true,
+                "auth": {
+                    "authType": "BASIC",
+                    "token": "678910",
+                    "isEncrypted": false
+                }
+            }
+        }
+    ],
+    "halt": false,
+    "timeout": 10
+}

@@ -7,7 +7,6 @@ import static org.junit.jupiter.api.Assertions.assertTimeoutPreemptively;
 import java.io.IOException;
 import java.lang.reflect.InvocationTargetException;
 import java.time.Duration;
-import java.util.concurrent.TimeoutException;
 
 import org.junit.jupiter.api.Test;
 import org.opentest4j.AssertionFailedError;
@@ -19,8 +18,8 @@ public class TestThreadManager {
             InstantiationException, IllegalAccessException, IllegalArgumentException, InvocationTargetException,
             IOException, InterruptedException {
         assertTimeoutPreemptively(Duration.ofSeconds(15), () -> {
-            ThreadManager manager = new ThreadManager("src/test/resources/simplethreads.json", new MyClassLoader());
-            manager.run(10);
+            ThreadManager manager = new ThreadManager("src/test/resources/10_simplethreads.json", new MyClassLoader());
+            manager.run();
         });
     }
 
@@ -31,8 +30,8 @@ public class TestThreadManager {
 
         assertThrows(AssertionFailedError.class, () -> {
             assertTimeoutPreemptively(Duration.ofSeconds(5), () -> {
-                ThreadManager manager = new ThreadManager("src/test/resources/simplethreads.json", new MyClassLoader());
-                manager.run(0);
+                ThreadManager manager = new ThreadManager("src/test/resources/0_simplethreads.json", new MyClassLoader());
+                manager.run();
             });
         });
 

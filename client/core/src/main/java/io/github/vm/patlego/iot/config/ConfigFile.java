@@ -7,6 +7,10 @@ public interface ConfigFile {
     public Set<? extends Config> getConfigs();
     
     public Boolean haltSystem();
+    
+    public Long getTimeout();
 
     public Config getConfig(String name);
+
+    public ConfigLog getLogConfig();
 }

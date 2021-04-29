@@ -21,7 +21,7 @@ public class Main {
             InvocationTargetException, InterruptedException {
         String path = Main.getConfigFilePath(args);
         ThreadManager manager = new ThreadManager(path, Main.class.getClassLoader());
-        manager.run(0);
+        manager.run();
     }
 
     public static String getConfigFilePath(String[] args) {
