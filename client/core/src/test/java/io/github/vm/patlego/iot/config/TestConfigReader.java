@@ -15,10 +15,19 @@ public class TestConfigReader {
     @Test
     public void testReader() throws IOException {
         ConfigFile main = ConfigReader.getConfigFile("src/test/resources/config.json", MainConfigFile.class);
-        assertNotNull(main.getConfig("sensor1"));
+        assertNotNull(main.getConfigs());
         assertEquals(2, main.getConfigs().size());
 
-        assertEquals(main.getConfig("sensor1").getSystem().getURL().toString(), "http://localhost:8181/talk/to/me");
+        assertEquals(main.getConfigs().stream().findFirst().get().getSystem().getURL().toString(), "http://localhost:8181/talk/to/me");
+    }
+
+    @Test
+    public void testReader_withDuplicates() throws IOException {
+        ConfigFile main = ConfigReader.getConfigFile("src/test/resources/duplicateconfig.json", MainConfigFile.class);
+        assertNotNull(main.getConfigs());
+        assertEquals(1, main.getConfigs().size());
+
+        assertEquals(main.getConfigs().stream().findFirst().get().getSystem().getURL().toString(), "http://localhost:8181/talk/to/me");
     }
     
 }

@@ -26,7 +26,7 @@ public class MainConfig implements Config {
     }
 
     @Override
-    public Boolean isEnabled() {
+    public boolean isEnabled() {
         return this.enable;
     }
 

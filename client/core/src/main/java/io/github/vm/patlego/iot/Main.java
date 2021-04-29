@@ -3,13 +3,8 @@ package io.github.vm.patlego.iot;
 import java.io.IOException;
 import java.lang.reflect.InvocationTargetException;
 import java.util.Arrays;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
 
-import io.github.vm.patlego.iot.config.Config;
-import io.github.vm.patlego.iot.config.ConfigFile;
-import io.github.vm.patlego.iot.config.ConfigReader;
+import java.util.List;
 import io.github.vm.patlego.iot.process.ThreadManager;
 
 /**
@@ -20,7 +15,9 @@ public class Main {
 
     private static final String CONFIG_PATH = "--config";
 
-    public static void main(String[] args) throws IOException, ClassNotFoundException, NoSuchMethodException, SecurityException, InstantiationException, IllegalAccessException, IllegalArgumentException, InvocationTargetException {
+    public static void main(String[] args) throws IOException, ClassNotFoundException, NoSuchMethodException,
+            SecurityException, InstantiationException, IllegalAccessException, IllegalArgumentException,
+            InvocationTargetException, InterruptedException {
         String path = Main.getConfigFilePath(args);
         ThreadManager manager = new ThreadManager(path);
         manager.run();

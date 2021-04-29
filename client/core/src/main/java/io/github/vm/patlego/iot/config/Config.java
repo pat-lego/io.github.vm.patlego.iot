@@ -24,7 +24,7 @@ public interface Config {
      * Determines if this module is enabled for the given system
      * @return
      */
-    public Boolean isEnabled();
+    public boolean isEnabled();
 
     public boolean equals(Object a);
 
