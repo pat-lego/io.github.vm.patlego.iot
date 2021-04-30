@@ -116,7 +116,7 @@ public class ThreadManager {
     private void manageMThreadDTO(ConfigFile configFile, MThreadDTO mThreadDTO) {
         Config config = configFile.getConfig(mThreadDTO.getmThread().getModule());
         if (config != null) {
-            if (config.isEnabled() && mThreadDTO.getmThread().getState().equals(MThreadState.INITIALIZED)) {
+            if (config.isEnabled() && (mThreadDTO.getmThread().getState().equals(MThreadState.INITIALIZED) || mThreadDTO.getmThread().getState().equals(MThreadState.STOPPED))) {
                 Thread thread = new Thread(mThreadDTO.getmThread());
                 mThreadDTO.setThread(thread);
                 thread.start();
