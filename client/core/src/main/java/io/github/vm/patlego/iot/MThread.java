@@ -1,14 +1,14 @@
 package io.github.vm.patlego.iot;
 
-import com.pi4j.io.gpio.GpioController;
-import com.pi4j.io.gpio.GpioFactory;
-import com.pi4j.io.gpio.GpioPin;
+import java.lang.reflect.Constructor;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import io.github.vm.patlego.iot.config.Config;
 import io.github.vm.patlego.iot.config.ConfigLog;
+import io.github.vm.patlego.iot.config.ConfigSystem;
+import io.github.vm.patlego.iot.relay.Relay;
 import io.github.vm.patlego.iot.threads.MThreadState;
 
 public abstract class MThread implements Runnable {
@@ -18,7 +18,6 @@ public abstract class MThread implements Runnable {
     protected Logger logger = LoggerFactory.getLogger(this.getClass());
     protected Config config;
     protected ConfigLog configLog;
-
 
     protected MThread(Config config, ConfigLog configLog) {
         if (config == null) {
@@ -34,15 +33,24 @@ public abstract class MThread implements Runnable {
 
     public abstract String getModule();
 
+    public Relay getRelay(ConfigSystem configSystem) {
+        try {
+            Class<Relay> relayClass = (Class<Relay>) Class.forName(configSystem.getRelay().getClassPath());
+            Constructor<Relay> relayClassConstructor = relayClass.getConstructor();
+            return relayClassConstructor.newInstance();
+        } catch (Exception e) {
+            return null;
+        }
+
+    }
 
     public MThreadState getState() {
         return this.state;
     }
 
     public void updateConfig(Config config) {
-        if (config != null) {
-            this.config = config;
-        }
+        this.config = config;
+
     }
 
     public Boolean keepRunning() {
