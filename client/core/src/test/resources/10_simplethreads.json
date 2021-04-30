@@ -8,7 +8,6 @@
                 "url": "http://localhost:8181/talk/to/me",
                 "hasAuth": true,
                 "auth": {
-                    "authType": "BASIC",
                     "token": "12345",
                     "isEncrypted": false
                 }
@@ -22,7 +21,6 @@
                 "url": "http://localhost:8181/talk/to/me",
                 "hasAuth": true,
                 "auth": {
-                    "authType": "BASIC",
                     "token": "678910",
                     "isEncrypted": false
                 }

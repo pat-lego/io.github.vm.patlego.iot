@@ -3,7 +3,7 @@ package io.github.vm.patlego.iot;
 import java.util.Optional;
 
 import io.github.vm.patlego.iot.config.Config;
-import io.github.vm.patlego.iot.config.System;
+import io.github.vm.patlego.iot.config.ConfigSystem;
 
 public class MainConfig implements Config {
 
@@ -23,7 +23,7 @@ public class MainConfig implements Config {
     }
 
     @Override
-    public System getSystem() {
+    public ConfigSystem getSystem() {
         return this.system;
     }
 

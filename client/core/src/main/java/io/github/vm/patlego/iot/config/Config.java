@@ -18,7 +18,7 @@ public interface Config {
      * Returns the system that the application will talk to when retrieving data
      * @return System
      */
-    public System getSystem();
+    public ConfigSystem getSystem();
 
     /**
      * Determines if this module is enabled for the given system
