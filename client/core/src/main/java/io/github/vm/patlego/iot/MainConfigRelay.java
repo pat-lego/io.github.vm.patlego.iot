@@ -2,7 +2,7 @@ package io.github.vm.patlego.iot;
 
 import io.github.vm.patlego.iot.config.ConfigRelay;
 
-public class MainRelayType implements ConfigRelay {
+public class MainConfigRelay implements ConfigRelay {
 
     private String type;
     private String clazz;

@@ -16,9 +16,7 @@ public class Main {
 
     private static final String CONFIG_PATH = "--config";
 
-    public static void main(String[] args) throws IOException, ClassNotFoundException, NoSuchMethodException,
-            SecurityException, InstantiationException, IllegalAccessException, IllegalArgumentException,
-            InvocationTargetException, InterruptedException {
+    public static void main(String[] args) throws IOException  {
         String path = Main.getConfigFilePath(args);
         ThreadManager manager = new ThreadManager(path, Main.class.getClassLoader());
         manager.run();

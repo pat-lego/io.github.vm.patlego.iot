@@ -41,7 +41,6 @@ public abstract class MThread implements Runnable {
         } catch (Exception e) {
             return null;
         }
-
     }
 
     public MThreadState getState() {
