@@ -24,6 +24,10 @@ public abstract class MThread implements Runnable {
         if (config == null) {
             throw new IllegalArgumentException("Cannot provide a null config object to the MThread");
         }
+
+        if (configLog == null) {
+            throw new IllegalArgumentException("Cannot provide a null configLog object to the MThread");
+        }
         this.config = config;
         this.configLog = configLog;
     }
