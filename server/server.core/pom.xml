@@ -73,6 +73,10 @@
       <artifactId>cxf-rt-frontend-jaxrs</artifactId>
     </dependency>
     <dependency>
+      <groupId>com.fasterxml.jackson.jaxrs</groupId>
+      <artifactId>jackson-jaxrs-json-provider</artifactId>
+    </dependency>
+    <dependency>
       <groupId>io.github.vm.patlego.iot.server</groupId>
       <artifactId>server.dao</artifactId>
       <version>${project.version}</version>
