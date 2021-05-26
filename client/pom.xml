@@ -12,6 +12,10 @@
   <packaging>pom</packaging>
   <name>IoT Client</name>
 
+  <properties>
+    <maven.deploy.skip>true</maven.deploy.skip>
+  </properties>
+
   <modules>
     <module>core</module>
   </modules>
