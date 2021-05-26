@@ -1,6 +1,7 @@
 package io.github.vm.patlego.iot;
 
 import java.lang.reflect.Constructor;
+import java.lang.reflect.InvocationTargetException;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -9,6 +10,7 @@ import io.github.vm.patlego.iot.config.Config;
 import io.github.vm.patlego.iot.config.ConfigLog;
 import io.github.vm.patlego.iot.config.ConfigSystem;
 import io.github.vm.patlego.iot.relay.Relay;
+import io.github.vm.patlego.iot.relay.RelayInstantiationException;
 import io.github.vm.patlego.iot.threads.MThreadState;
 
 public abstract class MThread implements Runnable {
@@ -33,14 +35,16 @@ public abstract class MThread implements Runnable {
 
     public abstract String getModule();
 
-    public Relay getRelay(ConfigSystem configSystem) {
+    public Relay getRelay(ConfigSystem configSystem) throws RelayInstantiationException {
         try {
             Class<Relay> relayClass = (Class<Relay>) Class.forName(configSystem.getRelay().getClassPath());
             Constructor<Relay> relayClassConstructor = relayClass.getConstructor();
             return relayClassConstructor.newInstance();
-        } catch (Exception e) {
-            return null;
+        } catch (ClassNotFoundException | NoSuchMethodException | SecurityException | InstantiationException
+                | IllegalAccessException | IllegalArgumentException | InvocationTargetException e) {
+            throw new RelayInstantiationException(e.getMessage(), e);
         }
+
     }
 
     public MThreadState getState() {
