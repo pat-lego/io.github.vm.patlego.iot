@@ -6,11 +6,13 @@
   <version>1.0-SNAPSHOT</version>
   <packaging>pom</packaging>
   <name>Karaf IoT</name>
+
   <properties>
     <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
     <maven.compiler.source>11</maven.compiler.source>
     <maven.compiler.target>11</maven.compiler.target>
   </properties>
+
   <distributionManagement>
     <repository>
       <id>patlego-iot</id>
@@ -18,7 +20,22 @@
       <url>https://maven.pkg.github.com/pat-lego/io.github.vm.patlego.iot</url>
     </repository>
   </distributionManagement>
+
+  <build>
+    <pluginManagement>
+      <plugins>
+        <plugin>
+          <groupId>org.apache.felix</groupId>
+          <artifactId>maven-bundle-plugin</artifactId>
+          <version>5.1.2</version>
+          <inherited>true</inherited>
+        </plugin>
+      </plugins>
+    </pluginManagement>
+  </build>
+
   <modules>
     <module>client</module>
+    <module>server</module>
   </modules>
 </project> 

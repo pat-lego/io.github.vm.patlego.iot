@@ -6,34 +6,18 @@
     <groupId>io.github.vm.patlego.iot</groupId>
     <version>1.0-SNAPSHOT</version>
   </parent>
+
   <groupId>io.github.vm.patlego.iot</groupId>
   <artifactId>client</artifactId>
   <packaging>pom</packaging>
   <name>IoT Client</name>
+
   <modules>
     <module>core</module>
   </modules>
 
   <dependencyManagement>
     <dependencies>
-      <dependency>
-        <groupId>org.osgi</groupId>
-        <artifactId>osgi.core</artifactId>
-        <version>7.0.0</version>
-        <scope>provided</scope>
-      </dependency>
-      <dependency>
-        <groupId>org.osgi</groupId>
-        <artifactId>osgi.cmpn</artifactId>
-        <version>7.0.0</version>
-        <scope>provided</scope>
-      </dependency>
-      <dependency>
-        <groupId>org.osgi</groupId>
-        <artifactId>osgi.annotation</artifactId>
-        <version>7.0.0</version>
-        <scope>provided</scope>
-      </dependency>
       <dependency>
         <groupId>org.junit.jupiter</groupId>
         <artifactId>junit-jupiter-api</artifactId>
@@ -77,17 +61,21 @@
     <pluginManagement>
       <plugins>
         <plugin>
-          <groupId>org.apache.felix</groupId>
-          <artifactId>maven-bundle-plugin</artifactId>
-          <version>5.1.2</version>
-          <inherited>true</inherited>
-        </plugin>
-        <plugin>
           <groupId>org.apache.maven.plugins</groupId>
           <artifactId>maven-jar-plugin</artifactId>
           <version>3.2.0</version>
         </plugin>
       </plugins>
     </pluginManagement>
+    <plugins>
+      <plugin>
+        <groupId>org.apache.felix</groupId>
+        <artifactId>maven-bundle-plugin</artifactId>
+      </plugin>
+      <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-jar-plugin</artifactId>
+      </plugin>
+    </plugins>
   </build>
 </project> 
