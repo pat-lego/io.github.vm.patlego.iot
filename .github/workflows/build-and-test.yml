@@ -26,3 +26,6 @@ jobs:
           architecture: x64
       - name: Run Maven
         run: mvn clean install
+        env:
+          PACKAGES_CORE_TOKEN: ${{secrets.PACKAGES_CORE_TOKEN}}
+          

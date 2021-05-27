@@ -19,6 +19,11 @@
                     <name>GitHub OWNER Apache Maven Packages</name>
                     <url>https://maven.pkg.github.com/pat-lego/io.github.vm.patlego.iot</url>
                 </repository>
+                <repository>
+                    <id>patlego-core</id>
+                    <name>GitHub OWNER Apache Maven Packages</name>
+                    <url>https://maven.pkg.github.com/pat-lego/io.github.vm.patlego</url>
+                </repository>
             </repositories>
         </profile>
     </profiles>
@@ -27,6 +32,11 @@
             <id>patlego-iot</id>
             <username>pat-lego</username>
             <password>${env.PACKAGES_IOT_TOKEN}</password>
+        </server>
+        <server>
+            <id>patlego-core</id>
+            <username>pat-lego</username>
+            <password>${env.PACKAGES_CORE_TOKEN}</password>
         </server>
     </servers>
 </settings>

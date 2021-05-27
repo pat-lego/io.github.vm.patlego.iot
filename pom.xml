@@ -20,6 +20,13 @@
       <url>https://maven.pkg.github.com/pat-lego/io.github.vm.patlego.iot</url>
     </repository>
   </distributionManagement>
+  <repositories>
+    <repository>
+      <id>patlego-core</id>
+      <name>GitHub OWNER Apache Maven Packages</name>
+      <url>https://maven.pkg.github.com/pat-lego/io.github.vm.patlego</url>
+    </repository>
+  </repositories>
 
   <build>
     <pluginManagement>

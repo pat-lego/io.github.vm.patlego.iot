@@ -26,3 +26,4 @@ jobs:
         run: mvn --settings settings.xml clean deploy
         env:
           PACKAGES_IOT_TOKEN: ${{secrets.PACKAGES_IOT_TOKEN}}
+          PACKAGES_CORE_TOKEN: ${{secrets.PACKAGES_CORE_TOKEN}}
