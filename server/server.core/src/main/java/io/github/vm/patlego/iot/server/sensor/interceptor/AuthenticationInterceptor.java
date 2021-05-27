@@ -1,6 +1,5 @@
 package io.github.vm.patlego.iot.server.sensor.interceptor;
 
-
 import java.io.IOException;
 import java.io.OutputStream;
 import java.net.HttpURLConnection;
@@ -27,25 +26,24 @@ public class AuthenticationInterceptor extends AbstractPhaseInterceptor<Message>
     @Override
     public void handleMessage(Message message) throws Fault {
         AuthorizationPolicy policy = message.get(AuthorizationPolicy.class);
-        // Check to see if the header is well set if not return and send a nice piss off message 
+        // Check to see if the header is well set if not return and send a nice piss off
+        // message
         if (policy == null) {
             sendErrorResponse(message, HttpURLConnection.HTTP_UNAUTHORIZED);
             return;
         }
-        
-        
+
     }
 
     private void sendErrorResponse(Message message, int responseCode) {
         Message outMessage = getOutMessage(message);
         outMessage.put(Message.RESPONSE_CODE, responseCode);
-       
-        message.getInterceptorChain().abort();
-        try {
+
+        try(OutputStream os = outMessage.getContent(OutputStream.class)) {
+            message.getInterceptorChain().abort();
             getConduit(message).prepare(outMessage);
-            close(outMessage);
         } catch (IOException e) {
-            logger.warn(e.getMessage(), e);
+            logger.error(e.getMessage(), e);
         }
     }
 
@@ -68,10 +66,4 @@ public class AuthenticationInterceptor extends AbstractPhaseInterceptor<Message>
         return conduit;
     }
 
-    private void close(Message outMessage) throws IOException {
-        OutputStream os = outMessage.getContent(OutputStream.class);
-        os.flush();
-        os.close();
-    }
-    
 }
