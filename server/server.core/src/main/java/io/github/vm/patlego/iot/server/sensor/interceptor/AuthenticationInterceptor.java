@@ -3,9 +3,12 @@ package io.github.vm.patlego.iot.server.sensor.interceptor;
 import java.io.IOException;
 import java.io.OutputStream;
 import java.net.HttpURLConnection;
+import java.util.List;
+import java.util.Map;
 
 import org.apache.cxf.configuration.security.AuthorizationPolicy;
 import org.apache.cxf.endpoint.Endpoint;
+import org.apache.cxf.helpers.CastUtils;
 import org.apache.cxf.interceptor.Fault;
 import org.apache.cxf.message.Exchange;
 import org.apache.cxf.message.Message;
@@ -31,10 +34,10 @@ public class AuthenticationInterceptor extends AbstractPhaseInterceptor<Message>
 
     @Override
     public void handleMessage(Message message) throws Fault {
-        AuthorizationPolicy policy = message.get(AuthorizationPolicy.class);
+        Map<String, List<String>> headers = CastUtils.cast((Map<?, ?>)message.get(Message.PROTOCOL_HEADERS));
         // Check to see if the header is well set if not return and send a nice piss off
         // message
-        if (policy == null) {
+        if (headers == null) {
             sendErrorResponse(message, HttpURLConnection.HTTP_UNAUTHORIZED);
             return;
         }
@@ -45,7 +48,7 @@ public class AuthenticationInterceptor extends AbstractPhaseInterceptor<Message>
         Message outMessage = getOutMessage(message);
         outMessage.put(Message.RESPONSE_CODE, responseCode);
 
-        try(OutputStream os = outMessage.getContent(OutputStream.class)) {
+        try (OutputStream os = outMessage.getContent(OutputStream.class)) {
             message.getInterceptorChain().abort();
             getConduit(message).prepare(outMessage);
         } catch (IOException e) {
