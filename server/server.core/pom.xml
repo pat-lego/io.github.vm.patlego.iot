@@ -17,6 +17,10 @@
   <build>
     <plugins>
       <plugin>
+        <groupId>org.apache.karaf.tooling</groupId>
+        <artifactId>karaf-services-maven-plugin</artifactId>
+      </plugin>
+      <plugin>
         <groupId>org.apache.felix</groupId>
         <artifactId>maven-bundle-plugin</artifactId>
         <extensions>true</extensions>
@@ -43,8 +47,8 @@
         <configuration>
           <exportScr>true</exportScr>
           <instructions>
-            <Import-Package>
-              !javax.annotation, *</Import-Package>
+            <Private-Package>io.github.vm.patlego.iot.server.commands</Private-Package>
+            <Import-Package>!javax.annotation, *</Import-Package>
             <!-- Enable processing of OSGI DS component annotations -->
             <_dsannotations>*</_dsannotations>
             <!-- Enable processing of OSGI metatype annotations -->
@@ -89,5 +93,27 @@
       <groupId>org.slf4j</groupId>
       <artifactId>slf4j-simple</artifactId>
     </dependency>
+    <dependency>
+      <groupId>io.jsonwebtoken</groupId>
+      <artifactId>jjwt-api</artifactId>
+    </dependency>
+    <dependency>
+      <groupId>io.jsonwebtoken</groupId>
+      <artifactId>jjwt-impl</artifactId>
+    </dependency>
+    <dependency>
+      <groupId>org.apache.karaf.shell</groupId>
+      <artifactId>org.apache.karaf.shell.core</artifactId>
+    </dependency>
+    <dependency>
+      <groupId>org.apache.commons</groupId>
+      <artifactId>commons-lang3</artifactId>
+    </dependency>
+    <dependency>
+      <groupId>io.jsonwebtoken</groupId>
+      <artifactId>jjwt-jackson</artifactId> <!-- or jjwt-gson if Gson is preferred -->
+      <version>0.11.2</version>
+      <scope>runtime</scope>
+  </dependency>
   </dependencies>
 </project>
