@@ -14,14 +14,18 @@ import org.osgi.service.component.annotations.Activate;
 import org.osgi.service.component.annotations.Component;
 import org.osgi.service.component.annotations.Deactivate;
 import org.osgi.service.component.annotations.Modified;
+import org.osgi.service.component.annotations.Reference;
 
+import io.github.vm.patlego.iot.server.authentication.Authentication;
+import io.github.vm.patlego.iot.server.authentication.jwt.Jwt;
 import io.github.vm.patlego.iot.server.sensor.interceptor.AuthenticationInterceptor;
 import io.github.vm.patlego.iot.server.sensor.servlets.SensorServiceServlet;
 
-import org.apache.cxf.interceptor.Interceptor;
-
-@Component
+@Component(immediate = true)
 public class SensorRestService {
+
+    @Reference
+    private Authentication<Jwt> jwtAuthentication;
     
     public Server server;
 
@@ -34,7 +38,7 @@ public class SensorRestService {
         bean.setServiceBean(new SensorServiceServlet());
             
         server = bean.create();
-        server.getEndpoint().getInInterceptors().add(new AuthenticationInterceptor());
+        server.getEndpoint().getInInterceptors().add(new AuthenticationInterceptor(jwtAuthentication));
     
     }
 

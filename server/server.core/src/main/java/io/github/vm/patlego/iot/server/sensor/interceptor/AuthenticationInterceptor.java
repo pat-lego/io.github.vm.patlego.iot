@@ -15,12 +15,18 @@ import org.apache.cxf.transport.Conduit;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import io.github.vm.patlego.iot.server.authentication.Authentication;
+
 public class AuthenticationInterceptor extends AbstractPhaseInterceptor<Message> {
 
     private Logger logger = LoggerFactory.getLogger(this.getClass());
 
-    public AuthenticationInterceptor() {
+    private Authentication auth;
+
+    public AuthenticationInterceptor(Authentication auth) {
         super(Phase.INVOKE);
+
+        this.auth = auth;
     }
 
     @Override
