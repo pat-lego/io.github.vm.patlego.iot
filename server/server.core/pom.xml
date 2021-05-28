@@ -110,10 +110,9 @@
       <artifactId>commons-lang3</artifactId>
     </dependency>
     <dependency>
-      <groupId>io.jsonwebtoken</groupId>
-      <artifactId>jjwt-jackson</artifactId> <!-- or jjwt-gson if Gson is preferred -->
-      <version>0.11.2</version>
-      <scope>runtime</scope>
-  </dependency>
+      <groupId>io.github.vm.patlego</groupId>
+      <artifactId>system.encryption</artifactId>
+      <version>${core.version}</version>
+    </dependency>
   </dependencies>
 </project>
