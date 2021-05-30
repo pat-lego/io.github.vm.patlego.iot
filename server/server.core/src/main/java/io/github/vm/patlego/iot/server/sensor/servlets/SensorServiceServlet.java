@@ -32,8 +32,7 @@ public class SensorServiceServlet implements SensorService {
     @POST
     @Override
     public SensorEvent createSensorEvent(SensorEvent event) {
-        // TODO Auto-generated method stub
-        return null;
+        return this.sensorEventDS.createEvent(event);
     }
 
     @Path("/{id}")
@@ -42,7 +41,7 @@ public class SensorServiceServlet implements SensorService {
     @Override
     public SensorEvent getSensorEvent(@PathParam("id") long id) {
         try {
-            return this.sensorEventDS.getEvent(id);
+            return sensorEventDS.getEvent(id);
         } catch (InvalidSensorEventException e) {
             throw new Fault(e);
         }
