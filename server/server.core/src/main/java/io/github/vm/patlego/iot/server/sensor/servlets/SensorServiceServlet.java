@@ -9,12 +9,22 @@ import javax.ws.rs.Path;
 import javax.ws.rs.PathParam;
 import javax.ws.rs.Produces;
 
+import org.apache.cxf.interceptor.Fault;
+
+import io.github.vm.patlego.iot.server.dao.exceptions.InvalidSensorEventException;
+import io.github.vm.patlego.iot.server.dao.repo.SensorEventDS;
 import io.github.vm.patlego.iot.server.dao.tables.SensorEvent;
 import io.github.vm.patlego.iot.server.sensor.SensorService;
 import io.github.vm.patlego.iot.server.sensor.SensorServletPath;
 
 @Path(SensorServletPath.SENSOR_PATH)
 public class SensorServiceServlet implements SensorService {
+
+    private SensorEventDS sensorEventDS;
+
+    public SensorServiceServlet(SensorEventDS sensorEventDS) {
+        this.sensorEventDS = sensorEventDS;
+    }
 
     @Path("/")
     @Consumes("application/json")
@@ -31,8 +41,12 @@ public class SensorServiceServlet implements SensorService {
     @GET
     @Override
     public SensorEvent getSensorEvent(@PathParam("id") long id) {
-        // TODO Auto-generated method stub
-        return null;
+        try {
+            return this.sensorEventDS.getEvent(id);
+        } catch (InvalidSensorEventException e) {
+            throw new Fault(e);
+        }
+
     }
 
     @Path("/")
@@ -40,8 +54,7 @@ public class SensorServiceServlet implements SensorService {
     @GET
     @Override
     public List<SensorEvent> getSensorEvents() {
-        // TODO Auto-generated method stub
-        return null;
+        return this.sensorEventDS.getEvents();
     }
     
 }

@@ -4,6 +4,7 @@ import java.util.List;
 
 import javax.persistence.TypedQuery;
 import javax.persistence.criteria.CriteriaQuery;
+import javax.persistence.criteria.Root;
 
 import org.apache.aries.jpa.template.JpaTemplate;
 import org.apache.aries.jpa.template.TransactionType;
@@ -48,8 +49,10 @@ public class SensorEventDSImpl implements SensorEventDS {
         return this.jpaTemplate.txExpr(TransactionType.RequiresNew, emFunction -> {
             CriteriaQuery<SensorEvent> criteriaQuerySensorEvent = emFunction.getCriteriaBuilder()
                     .createQuery(SensorEvent.class);
-            TypedQuery<SensorEvent> typedQuery = emFunction.createQuery(criteriaQuerySensorEvent);
-            return typedQuery.getResultList();
+            Root<SensorEvent> variableRoot = criteriaQuerySensorEvent.from(SensorEvent.class);
+
+            criteriaQuerySensorEvent.select(variableRoot);
+            return emFunction.createQuery(criteriaQuerySensorEvent).getResultList();
         });
     }
 

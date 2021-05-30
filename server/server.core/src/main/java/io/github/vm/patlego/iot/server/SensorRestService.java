@@ -18,7 +18,9 @@ import org.osgi.service.component.annotations.Reference;
 
 import io.github.vm.patlego.iot.server.authentication.Authentication;
 import io.github.vm.patlego.iot.server.authentication.jwt.Jwt;
+import io.github.vm.patlego.iot.server.dao.repo.SensorEventDS;
 import io.github.vm.patlego.iot.server.sensor.interceptor.AuthenticationInterceptor;
+import io.github.vm.patlego.iot.server.sensor.interceptor.SensorEventInterceptor;
 import io.github.vm.patlego.iot.server.sensor.servlets.SensorServiceServlet;
 
 @Component(immediate = true)
@@ -26,6 +28,9 @@ public class SensorRestService {
 
     @Reference
     private Authentication<Jwt> jwtAuthentication;
+
+    @Reference
+    private SensorEventDS sensorEventDS;
     
     public Server server;
 
@@ -35,11 +40,11 @@ public class SensorRestService {
         bean.setAddress(SensorServicePath.SENSOR_PATH);
         bean.setBus(BusFactory.getDefaultBus());
         bean.setProvider(new JacksonJsonProvider());
-        bean.setServiceBean(new SensorServiceServlet());
+        bean.setServiceBean(new SensorServiceServlet(sensorEventDS));
             
         server = bean.create();
         server.getEndpoint().getInInterceptors().add(new AuthenticationInterceptor(jwtAuthentication));
-    
+        server.getEndpoint().getInInterceptors().add(new SensorEventInterceptor());
     }
 
     @Modified

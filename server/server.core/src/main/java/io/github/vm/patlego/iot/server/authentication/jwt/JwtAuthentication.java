@@ -1,10 +1,6 @@
 package io.github.vm.patlego.iot.server.authentication.jwt;
 
 import java.security.Key;
-import java.util.Base64;
-
-import javax.crypto.SecretKey;
-import javax.crypto.spec.SecretKeySpec;
 
 import org.osgi.service.component.annotations.Activate;
 import org.osgi.service.component.annotations.Component;
@@ -14,7 +10,6 @@ import io.github.vm.patlego.enc.Security;
 import io.github.vm.patlego.iot.server.authentication.Authentication;
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jwts;
-import io.jsonwebtoken.SignatureAlgorithm;
 import io.jsonwebtoken.io.Decoders;
 import io.jsonwebtoken.security.Keys;
 
