@@ -1,5 +1,8 @@
 package io.github.vm.patlego.iot.server.sensor.servlets;
 
+import java.sql.Timestamp;
+import java.time.LocalDateTime;
+import java.time.ZoneId;
 import java.util.List;
 
 import javax.ws.rs.Consumes;
@@ -32,6 +35,7 @@ public class SensorServiceServlet implements SensorService {
     @POST
     @Override
     public SensorEvent createSensorEvent(SensorEvent event) {
+        event.setTime(Timestamp.valueOf(LocalDateTime.now(ZoneId.of("America/New_York"))));
         return this.sensorEventDS.createEvent(event);
     }
 

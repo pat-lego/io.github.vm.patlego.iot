@@ -1,8 +1,5 @@
 package io.github.vm.patlego.iot.server.dao.repo;
 
-import java.sql.Timestamp;
-import java.time.LocalDateTime;
-import java.time.ZoneId;
 import java.util.List;
 
 import javax.persistence.criteria.CriteriaQuery;
@@ -29,7 +26,6 @@ public class SensorEventDSImpl implements SensorEventDS {
     @Override
     public SensorEvent createEvent(SensorEvent event) {
         this.jpaTemplate.tx(TransactionType.RequiresNew, entityManager -> {
-            event.setTime(Timestamp.valueOf(LocalDateTime.now(ZoneId.of("America/New_York"))));
             entityManager.persist(event);
         });
 
