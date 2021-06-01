@@ -1,15 +1,10 @@
 package io.github.vm.patlego.iot.server;
 
-import java.util.Arrays;
-import java.util.List;
-
 import com.fasterxml.jackson.jaxrs.json.JacksonJsonProvider;
 
 import org.apache.cxf.BusFactory;
 import org.apache.cxf.endpoint.Server;
 import org.apache.cxf.jaxrs.JAXRSServerFactoryBean;
-import org.apache.cxf.message.Message;
-import org.apache.cxf.message.MessageImpl;
 import org.osgi.service.component.annotations.Activate;
 import org.osgi.service.component.annotations.Component;
 import org.osgi.service.component.annotations.Deactivate;
@@ -22,6 +17,7 @@ import io.github.vm.patlego.iot.server.dao.repo.SensorEventDS;
 import io.github.vm.patlego.iot.server.sensor.interceptor.AuthenticationInterceptor;
 import io.github.vm.patlego.iot.server.sensor.interceptor.SensorEventInterceptor;
 import io.github.vm.patlego.iot.server.sensor.servlets.SensorServiceServlet;
+import io.github.vm.patlego.sms.sender.SMSService;
 
 @Component(immediate = true)
 public class SensorRestService {
@@ -30,9 +26,12 @@ public class SensorRestService {
     private Authentication<Jwt> jwtAuthentication;
 
     @Reference
+    private SMSService smsService;
+
+    @Reference
     private SensorEventDS sensorEventDS;
     
-    public Server server;
+    private Server server;
 
     @Activate
     public void activate() throws Exception {
@@ -40,7 +39,7 @@ public class SensorRestService {
         bean.setAddress(SensorServicePath.SENSOR_PATH);
         bean.setBus(BusFactory.getDefaultBus());
         bean.setProvider(new JacksonJsonProvider());
-        bean.setServiceBean(new SensorServiceServlet(sensorEventDS));
+        bean.setServiceBean(new SensorServiceServlet(sensorEventDS, smsService));
             
         server = bean.create();
         server.getEndpoint().getInInterceptors().add(new AuthenticationInterceptor(jwtAuthentication));

@@ -115,6 +115,11 @@
       <version>${core.version}</version>
     </dependency>
     <dependency>
+      <groupId>io.github.vm.patlego</groupId>
+      <artifactId>sms.core</artifactId>
+      <version>${core.version}</version>
+    </dependency>
+    <dependency>
       <groupId>javax.servlet</groupId>
       <artifactId>javax.servlet-api</artifactId>
     </dependency>

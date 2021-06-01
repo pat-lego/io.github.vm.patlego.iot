@@ -4,6 +4,7 @@ import java.sql.Timestamp;
 import java.time.LocalDateTime;
 import java.time.ZoneId;
 import java.util.List;
+import java.util.Set;
 
 import javax.ws.rs.Consumes;
 import javax.ws.rs.GET;
@@ -19,14 +20,18 @@ import io.github.vm.patlego.iot.server.dao.repo.SensorEventDS;
 import io.github.vm.patlego.iot.server.dao.tables.SensorEvent;
 import io.github.vm.patlego.iot.server.sensor.SensorService;
 import io.github.vm.patlego.iot.server.sensor.SensorServletPath;
+import io.github.vm.patlego.sms.sender.SMSService;
+import io.github.vm.patlego.sms.sender.bean.SMSMessage;
 
 @Path(SensorServletPath.SENSOR_PATH)
 public class SensorServiceServlet implements SensorService {
 
     private SensorEventDS sensorEventDS;
+    private SMSService smsService;
 
-    public SensorServiceServlet(SensorEventDS sensorEventDS) {
+    public SensorServiceServlet(SensorEventDS sensorEventDS, SMSService smsService) {
         this.sensorEventDS = sensorEventDS;
+        this.smsService = smsService;
     }
 
     @Path("/")
@@ -35,6 +40,7 @@ public class SensorServiceServlet implements SensorService {
     @POST
     @Override
     public SensorEvent createSensorEvent(SensorEvent event) {
+
         event.setTime(Timestamp.valueOf(LocalDateTime.now(ZoneId.of("America/New_York"))));
         return this.sensorEventDS.createEvent(event);
     }
