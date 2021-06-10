@@ -11,6 +11,7 @@ import io.github.vm.patlego.iot.server.authentication.Authentication;
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.io.Decoders;
+import io.jsonwebtoken.jackson.io.JacksonSerializer;
 import io.jsonwebtoken.security.Keys;
 
 @Component(service = Authentication.class, immediate = true)
@@ -44,6 +45,7 @@ public class JwtAuthentication implements Authentication<Jwt> {
             .setIssuer(token.getIss())
             .setExpiration(token.getExp())
             .signWith(this.originalKey)
+            .serializeToJsonWith(new JacksonSerializer<>())
             .compact();
     }
 
