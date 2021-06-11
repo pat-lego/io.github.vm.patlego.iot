@@ -3,6 +3,8 @@ package io.github.vm.patlego.iot.server.filters;
 import java.io.IOException;
 import java.net.MalformedURLException;
 import java.net.URL;
+import java.util.Arrays;
+import java.util.Optional;
 
 import javax.servlet.Filter;
 import javax.servlet.FilterChain;
@@ -34,15 +36,16 @@ public class AuthenticationFilter implements Filter {
             throws IOException, ServletException {
         HttpServletRequest httpRequest = (HttpServletRequest) request;
         HttpServletResponse httpResponse = (HttpServletResponse) response;
-        String authHeader = httpRequest.getHeader("Authentication");
 
         if (this.shouldFilter(new URL(httpRequest.getRequestURL().toString()))) {
+            String authHeader = getQueryToken(httpRequest.getQueryString());
             if (null != authHeader) {
                 Authentication<Jwt> authentication = WebAppHelper.getService(
                         (BundleContext) request.getServletContext().getAttribute("osgi-bundlecontext"),
                         Authentication.class);
                 try {
                     authentication.validate(authHeader);
+                    chain.doFilter(request, response);
                 } catch (Exception e) {
                     httpResponse.setHeader("X-Authentication-Failure-Cause", "Expired Token");
                     httpResponse.sendError(HttpServletResponse.SC_UNAUTHORIZED);
@@ -58,17 +61,25 @@ public class AuthenticationFilter implements Filter {
 
     }
 
+    private String getQueryToken(String queryParams) {
+        if (null == queryParams) {
+            return null;
+        }
+
+        Optional<String> token = Arrays.stream(queryParams.split("&"))
+            .filter(entry -> entry.contains("token"))
+            .findFirst();
+        if (token.isPresent()) {
+            return token.get().split("=")[1];
+        } else {
+            return null;
+        }
+        
+    }
+
     private boolean shouldFilter(URL url) {
         String path = url.getPath();
-        if (path.contains(".js") || path.contains(".css")) {
-            return Boolean.FALSE;
-        }
-
-        if ("/iot/patlego/login.html".equals(path) || "/iot/patlego/servlet/authenticate.action".equals(path)) {
-            return Boolean.FALSE;
-        }
-
-        if (path.contains("/iot/patlego")) {
+        if (path.endsWith("events.html")) {
             return Boolean.TRUE;
         }
 

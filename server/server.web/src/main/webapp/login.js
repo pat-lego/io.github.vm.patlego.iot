@@ -1,6 +1,3 @@
-window.iot = {} || window.iot;
-window.iot.data = {} || window.iot.data;
-
 document.getElementById("login").addEventListener("click", (event) => {
     axios({
         method: 'post',
@@ -11,6 +8,7 @@ document.getElementById("login").addEventListener("click", (event) => {
         }
     }).then((resp) => {
         window.iot.data.token = resp.data.token;
+        window.location.href = `/iot/patlego/events.html?token=${window.iot.data.token}`;
     }).catch((error) => {
         console.error("Failed to authenticate please validate");
     });

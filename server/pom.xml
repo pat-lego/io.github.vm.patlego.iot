@@ -18,8 +18,9 @@
     <maven.compiler.source>11</maven.compiler.source>
     <maven.compiler.target>11</maven.compiler.target>
     <karaf.runtime.version>4.3.2</karaf.runtime.version>
-    <jjwt.version>0.11.2</jjwt.version>
+    <jwt.version>3.16.0</jwt.version>
     <core.version>1.0-SNAPSHOT</core.version>
+    <jackson.version>2.12.3</jackson.version>
   </properties>
   <build>
     <pluginManagement>
@@ -107,16 +108,6 @@
         <scope>test</scope>
       </dependency>
       <dependency>
-        <groupId>io.jsonwebtoken</groupId>
-        <artifactId>jjwt-api</artifactId>
-        <version>${jjwt.version}</version>
-      </dependency>
-      <dependency>
-        <groupId>io.jsonwebtoken</groupId>
-        <artifactId>jjwt-impl</artifactId>
-        <version>${jjwt.version}</version>
-      </dependency>
-      <dependency>
         <groupId>org.apache.karaf.shell</groupId>
         <artifactId>org.apache.karaf.shell.core</artifactId>
         <version>${karaf.runtime.version}</version>
@@ -143,6 +134,31 @@
         <groupId>commons-io</groupId>
         <artifactId>commons-io</artifactId>
         <version>2.8.0</version>
+      </dependency>
+      <dependency>
+        <groupId>com.auth0</groupId>
+        <artifactId>java-jwt</artifactId>
+        <version>${jwt.version}</version>
+      </dependency>
+      <dependency>
+        <groupId>com.fasterxml.jackson.core</groupId>
+        <artifactId>jackson-core</artifactId>
+        <version>${jackson.version}</version>
+      </dependency>
+      <dependency>
+        <groupId>com.fasterxml.jackson.core</groupId>
+        <artifactId>jackson-annotations</artifactId>
+        <version>${jackson.version}</version>
+      </dependency>
+      <dependency>
+        <groupId>com.fasterxml.jackson.core</groupId>
+        <artifactId>jackson-databind</artifactId>
+        <version>${jackson.version}</version>
+      </dependency>
+      <dependency>
+        <groupId>com.fasterxml.jackson.datatype</groupId>
+        <artifactId>jackson-datatype-jsr310</artifactId>
+        <version>${jackson.version}</version>
       </dependency>
     </dependencies>
   </dependencyManagement>

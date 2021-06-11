@@ -3,6 +3,7 @@ package io.github.vm.patlego.iot.server.servlets;
 import java.io.IOException;
 import java.io.OutputStream;
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.time.ZoneId;
 import java.time.temporal.ChronoUnit;
 import java.util.Date;
@@ -45,8 +46,8 @@ public class AuthenticationServlet extends HttpServlet {
                         Authentication<Jwt> jwtAuthentication = WebAppHelper.getService((BundleContext) req.getServletContext().getAttribute("osgi-bundlecontext"), Authentication.class);
                         
                         Jwt jwt = new Jwt();
-                        jwt.setExp(Date.from(LocalDate.now().plusDays(1).atStartOfDay(ZoneId.of("America/New_York")).toInstant()));
-                        jwt.setIat(Date.from(LocalDate.now().atStartOfDay(ZoneId.of("America/New_York")).toInstant()));
+                        jwt.setExp(Date.from(LocalDateTime.now().plusHours(1L).atZone(ZoneId.of("America/New_York")).toInstant()));
+                        jwt.setIat(Date.from(LocalDateTime.now().atZone(ZoneId.of("America/New_York")).toInstant()));
                         jwt.setIss(ISS);
                         jwt.setSub("IoT System Console");
                         jwt.setAud("IoT Auth Token");
