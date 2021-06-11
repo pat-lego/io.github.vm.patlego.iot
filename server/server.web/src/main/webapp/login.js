@@ -7,8 +7,7 @@ document.getElementById("login").addEventListener("click", (event) => {
             "password": document.getElementById("password").value
         }
     }).then((resp) => {
-        window.iot.data.token = resp.data.token;
-        window.location.href = `/iot/patlego/events.html?token=${window.iot.data.token}`;
+        window.location.href = `/iot/patlego/events.html?token=${resp.data.token}`;
     }).catch((error) => {
         console.error("Failed to authenticate please validate");
     });

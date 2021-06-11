@@ -25,7 +25,7 @@ public class AuthenticationInterceptor extends AbstractPhaseInterceptor<Message>
     private Logger logger = LoggerFactory.getLogger(this.getClass());
 
     private Authentication<Jwt> auth;
-    private static final String AUTH_HEADER = "Authentication";
+    private static final String AUTH_HEADER = "Authorization";
 
     public AuthenticationInterceptor(Authentication<Jwt> auth) {
         super(Phase.INVOKE);
