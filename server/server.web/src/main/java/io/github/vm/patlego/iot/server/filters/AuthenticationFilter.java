@@ -4,7 +4,9 @@ import java.io.IOException;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.Arrays;
+import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 import javax.servlet.Filter;
 import javax.servlet.FilterChain;
@@ -19,6 +21,8 @@ import org.osgi.framework.BundleContext;
 
 import io.github.vm.patlego.iot.server.authentication.Authentication;
 import io.github.vm.patlego.iot.server.authentication.jwt.Jwt;
+import io.github.vm.patlego.iot.server.users.SimpleUserManager;
+import io.github.vm.patlego.iot.server.users.UserManager;
 import io.github.vm.patlego.iot.server.utils.WebAppHelper;
 
 public class AuthenticationFilter implements Filter {
@@ -36,19 +40,33 @@ public class AuthenticationFilter implements Filter {
             throws IOException, ServletException {
         HttpServletRequest httpRequest = (HttpServletRequest) request;
         HttpServletResponse httpResponse = (HttpServletResponse) response;
+        UserManager userManager = new SimpleUserManager();
 
+        // Check to see if we should filter the request
         if (this.shouldFilter(new URL(httpRequest.getRequestURL().toString()))) {
             String authHeader = getQueryToken(httpRequest.getQueryString());
+
             if (null != authHeader) {
                 Authentication<Jwt> authentication = WebAppHelper.getService(
                         (BundleContext) request.getServletContext().getAttribute("osgi-bundlecontext"),
                         Authentication.class);
+                Jwt jwt = null;
+
+                // Validate the authenticity of the authHeader
                 try {
-                    authentication.validate(authHeader);
-                    chain.doFilter(request, response);
+                    jwt = authentication.validate(authHeader);
                 } catch (Exception e) {
-                    httpResponse.setHeader("X-Authentication-Failure-Cause", "Expired Token");
+                    httpResponse.setHeader("X-Authentication-Failure-Cause", "Invalid Token");
                     httpResponse.sendError(HttpServletResponse.SC_UNAUTHORIZED);
+                }
+
+                // Permissions check
+                if (jwt == null || !hasPermissions(userManager.getPermissions(jwt.getSub()).getPermissions(),
+                        httpRequest.getServletPath())) {
+                    httpResponse.setHeader("X-Authorization-Failure-Cause", "Invalid permissions");
+                    httpResponse.sendError(HttpServletResponse.SC_FORBIDDEN);
+                } else {
+                    chain.doFilter(request, response);
                 }
 
             } else {
@@ -61,20 +79,30 @@ public class AuthenticationFilter implements Filter {
 
     }
 
+    private boolean hasPermissions(String permissions, String url) {
+        List<String> permList = Arrays.asList(permissions.split(","));
+        List<String> filteredPerms = permList.stream().filter(perm -> url.matches(perm)).collect(Collectors.toList());
+
+        if (!filteredPerms.isEmpty()) {
+            return true;
+        }
+
+        return false;
+    }
+
     private String getQueryToken(String queryParams) {
         if (null == queryParams) {
             return null;
         }
 
-        Optional<String> token = Arrays.stream(queryParams.split("&"))
-            .filter(entry -> entry.contains("token"))
-            .findFirst();
+        Optional<String> token = Arrays.stream(queryParams.split("&")).filter(entry -> entry.contains("token"))
+                .findFirst();
         if (token.isPresent()) {
             return token.get().split("=")[1];
         } else {
             return null;
         }
-        
+
     }
 
     private boolean shouldFilter(URL url) {

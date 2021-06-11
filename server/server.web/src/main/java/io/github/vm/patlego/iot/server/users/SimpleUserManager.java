@@ -1,9 +1,10 @@
 package io.github.vm.patlego.iot.server.users;
 
 import java.io.IOException;
-import java.io.InputStream;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.Properties;
 
 public class SimpleUserManager implements UserManager {
@@ -31,27 +32,13 @@ public class SimpleUserManager implements UserManager {
     @Override
     public User getUser(String username) {
         String pwd = (String) this.users.get(username);
-
-        User user = new User();
-        user.setUsername(username);
-        user.setPassword(pwd);
-
-        return user;
+        return new PermissionedUser(username, pwd);
     }
 
     @Override
-    public List<User> getUsers() {
-        List<User> userList = new ArrayList<>();
-
-        this.users.entrySet().forEach(entry -> {
-            User user = new User();
-            user.setUsername((String) entry.getKey());
-            user.setPassword((String) entry.getValue());
-
-            userList.add(user);
-        });
-
-        return userList;
+    public Permissions getPermissions(String username) {
+        String permissions =  ((PermissionedUser) this.getUser(username)).getPermissions();
+        return () -> { return permissions; };
     }
     
 }

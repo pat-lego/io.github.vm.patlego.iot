@@ -21,8 +21,11 @@ import org.osgi.framework.BundleContext;
 import io.github.vm.patlego.enc.Security;
 import io.github.vm.patlego.iot.server.authentication.Authentication;
 import io.github.vm.patlego.iot.server.authentication.jwt.Jwt;
+import io.github.vm.patlego.iot.server.users.LoginUser;
+import io.github.vm.patlego.iot.server.users.PermissionedUser;
 import io.github.vm.patlego.iot.server.users.SimpleUserManager;
 import io.github.vm.patlego.iot.server.users.User;
+import io.github.vm.patlego.iot.server.users.UserManager;
 import io.github.vm.patlego.iot.server.utils.WebAppHelper;
 
 public class AuthenticationServlet extends HttpServlet {
@@ -32,14 +35,14 @@ public class AuthenticationServlet extends HttpServlet {
 
     @Override
     protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-        User requestUser = gson.fromJson(IOUtils.toString(req.getInputStream(), "UTF-8"), User.class);
+        User requestUser = gson.fromJson(IOUtils.toString(req.getInputStream(), "UTF-8"), LoginUser.class);
 
         try(OutputStream out = resp.getOutputStream()) {
             if (null == requestUser.getUsername() || null == requestUser.getPassword()) {
                 resp.sendError(HttpServletResponse.SC_UNAUTHORIZED);
             } else {
                 Security security = WebAppHelper.getService((BundleContext) req.getServletContext().getAttribute("osgi-bundlecontext"), Security.class);
-                SimpleUserManager userManager = new SimpleUserManager();
+                UserManager userManager = new SimpleUserManager();
                 if (userManager.userExists(requestUser.getUsername())) {
                     User user = userManager.getUser(requestUser.getUsername());
                     if (requestUser.getPassword().equals(security.decrypt(user.getPassword()))) {
@@ -49,7 +52,7 @@ public class AuthenticationServlet extends HttpServlet {
                         jwt.setExp(Date.from(LocalDateTime.now().plusHours(1L).atZone(ZoneId.of("America/New_York")).toInstant()));
                         jwt.setIat(Date.from(LocalDateTime.now().atZone(ZoneId.of("America/New_York")).toInstant()));
                         jwt.setIss(ISS);
-                        jwt.setSub("IoT System Console");
+                        jwt.setSub(requestUser.getUsername());
                         jwt.setAud("IoT Auth Token");
 
                         String jwtToken = jwtAuthentication.createToken(jwt);
