@@ -1,0 +1,14 @@
+[Unit]
+Description=Basement PIR Sensor
+After=network.target
+
+[Service]
+ExecStart=/usr/bin/java -jar client.basement-livingroom-1.0-SNAPSHOT-jar-with-dependencies.jar --config config.json
+WorkingDirectory=/home/pi/Documents/io/github/vm/patlego/iot/basement/livingroom
+StandardOutput=inherit
+StandardError=inherit
+Restart=always
+User=pi
+
+[Install]
+WantedBy=multi-user.target
