@@ -7,6 +7,7 @@ import ch.qos.logback.classic.LoggerContext;
 import ch.qos.logback.classic.encoder.PatternLayoutEncoder;
 import ch.qos.logback.core.FileAppender;
 import io.github.vm.patlego.iot.client.config.ConfigLog;
+import io.github.vm.patlego.iot.client.threads.ThreadManager;
 
 public class MainConfigLog implements ConfigLog {
 
@@ -27,7 +28,7 @@ public class MainConfigLog implements ConfigLog {
     public Logger getLogger() {
         LoggerContext loggerContext = (LoggerContext) LoggerFactory.getILoggerFactory();
         if (this.name == null || this.name.isBlank() || this.path == null || this.path.isBlank()) {
-            return loggerContext.getLogger(Main.class);
+            return loggerContext.getLogger(ThreadManager.class);
         }
         
         FileAppender fileAppender = new FileAppender();

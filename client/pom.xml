@@ -14,18 +14,34 @@
 
   <properties>
     <maven.deploy.skip>true</maven.deploy.skip>
+    <pi4j.version>1.4</pi4j.version>
   </properties>
 
   <modules>
     <module>core</module>
+    <module>basement-livingroom</module>
   </modules>
+
+  <repositories>
+    <repository>
+      <id>oss-snapshots-repo</id>
+      <name>Sonatype OSS Maven Repository</name>
+      <url>https://oss.sonatype.org/content/groups/public</url>
+      <releases>
+        <enabled>false</enabled>
+      </releases>
+      <snapshots>
+        <enabled>true</enabled>
+      </snapshots>
+    </repository>
+  </repositories>
 
   <dependencyManagement>
     <dependencies>
       <dependency>
         <groupId>com.pi4j</groupId>
         <artifactId>pi4j-core</artifactId>
-        <version>1.4</version>
+        <version>${pi4j.version}</version>
       </dependency>
       <dependency>
         <groupId>commons-io</groupId>
@@ -54,7 +70,6 @@
       </dependency>
     </dependencies>
   </dependencyManagement>
-
   <build>
     <pluginManagement>
       <plugins>

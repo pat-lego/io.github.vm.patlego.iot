@@ -41,6 +41,7 @@ public class ThreadManager {
     }
 
     private void init() throws IOException {
+        System.out.printf("About to build the threads map");
         ConfigFile configFile = this.readFile(this.clazz);
         for (Config config : configFile.getConfigs()) {
             try {
@@ -53,6 +54,7 @@ public class ThreadManager {
                     mThreadDTO.setmThread(mThread);
 
                     threads.put(config.getThread(), mThreadDTO);
+                    System.out.println(String.format("Created an instance of MThread named %s", mThreadDTO.getClass().getName()));
                 } else {
                     this.logger.info("The {} thread is already loaded skipping its instantiation since it is currently ", config.getThread());
                 }
@@ -68,6 +70,7 @@ public class ThreadManager {
                 this.logger.error(e.getMessage(), e);
             }
         }
+        this.logger.info("Thread map built");
     }
 
     private ConfigFile readFile(Class<? extends ConfigFile> clazz) throws IOException {
@@ -91,12 +94,16 @@ public class ThreadManager {
      */
     public void run() throws IOException {
         try {
+            this.logger.info("Thread Manager activated");
             Instant start = Instant.now();
             ConfigFile configFile = this.readFile(MainConfigFile.class);
             this.init();
+            this.logger.info("Thread Manager instantiated");
 
             while (Boolean.TRUE.equals(!this.haltSystem()) && hasTimeoutElapsed(start, Instant.now(), configFile)) {
                 configFile = this.readFile(this.clazz);
+
+                this.logger.info("System is not haulted - continuing");
 
                 for (Map.Entry<String, MThreadDTO> entry : this.threads.entrySet()) {
                     MThreadDTO mThreadDTO = entry.getValue();

@@ -1,0 +1,10 @@
+{
+    "configs": [
+        {
+            "module": "Basement Living Room",
+            "thread": "io.github.vm.patlego.iot.basement.livingroom.PIRSensor",
+            "enable": true
+        }
+    ],
+    "halt": false
+}
