@@ -3,7 +3,19 @@
         {
             "module": "Basement Living Room",
             "thread": "io.github.vm.patlego.iot.basement.livingroom.PIRSensor",
-            "enable": true
+            "enable": true,
+            "system": {
+                "url": "https://www.pat-lego.com/cxf/sensors/events",
+                "hasAuth": true,
+                "auth": {
+                    "token": "9CEqDDLjnAW39ZQLv/2vvDvGLZh1JGl/WG9IqG6iC/NUjYhznlTc6UNCY0aKaLPOb2mn+cNazXlOcDse+6IWu9Mydh7alJ2+rC1kboq8AX9RqVLsRdiLwarBkfoGz3E1Tz/A8k9PfCK5ijdvEiJJHIsUSXer3OgdxXGASOELjks9a2c5MElb/zVzDfgI66lghDE6TBnRRti9ZXlM3bfjspQGkebMnoj6sVTLDp+ql3HH3phW8S9QrPhhnKueq5qyjaqW2WY/0AB2HBxGPB1/sGNIGwI7tz1r",
+                    "isEncrypted": true
+                },
+                "configRelay": {
+                    "type": "POST",
+                    "clazz": "io.github.vm.patlego.iot.basement.livingroom.SensorRelay"
+                }
+            }
         }
     ],
     "halt": false

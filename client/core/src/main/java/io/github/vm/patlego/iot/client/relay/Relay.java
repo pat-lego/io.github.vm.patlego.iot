@@ -6,10 +6,11 @@ public interface Relay {
 
     /**
      * Implementation is used to send data to an external system
+     * @param message
      * @param config
      * @return
      * @throws RelayException
      */
-    public Object execute(Config config) throws RelayException;
+    public Object execute(Config config, HttpMsg data) throws RelayException;
     
 }

@@ -16,29 +16,29 @@ public abstract class HttpRelay implements Relay {
         return AUTHORIZATION;
     }
 
-    public abstract String getToken();
+    public abstract String getToken(Config config);
 
-    public abstract CloseableHttpResponse get(Config config) throws RelayException;
-    public abstract CloseableHttpResponse put(Config config) throws RelayException;
-    public abstract CloseableHttpResponse post(Config config) throws RelayException;
-    public abstract CloseableHttpResponse delete(Config config) throws RelayException;
+    public abstract CloseableHttpResponse get(Config config, HttpMsg data) throws RelayException;
+    public abstract CloseableHttpResponse put(Config config, HttpMsg data) throws RelayException;
+    public abstract CloseableHttpResponse post(Config config, HttpMsg data) throws RelayException;
+    public abstract CloseableHttpResponse delete(Config config, HttpMsg data) throws RelayException;
 
     @Override
-    public Object execute(Config config) throws RelayException {
+    public Object execute(Config config, HttpMsg data) throws RelayException {
         if (config.getSystem().getRelay().getType().equals(MainConfigHttp.GET)) {
-            return this.get(config);
+            return this.get(config, data);
         }
 
         if (config.getSystem().getRelay().getType().equals(MainConfigHttp.POST)) {
-            return this.post(config);
+            return this.post(config, data);
         }
 
         if (config.getSystem().getRelay().getType().equals(MainConfigHttp.PUT)) {
-            return this.put(config);
+            return this.put(config, data);
         }
 
         if (config.getSystem().getRelay().getType().equals(MainConfigHttp.DELETE)) {
-            return this.delete(config);
+            return this.delete(config, data);
         }
 
         throw new RelayException(String.format("No matching relay type located was given %s as relay type", config.getSystem().getRelay().getType()));

@@ -7,10 +7,6 @@ import java.util.List;
 
 import io.github.vm.patlego.iot.client.threads.ThreadManager;
 
-/**
- * Hello world!
- *
- */
 public class Main {
 
     private static final String CONFIG_PATH = "--config";

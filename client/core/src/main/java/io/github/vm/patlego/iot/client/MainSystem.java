@@ -12,7 +12,7 @@ public class MainSystem implements ConfigSystem {
     private String url;
     private Boolean hasAuth;
     private MainAuth auth;
-    private ConfigRelay configRelay;
+    private MainConfigRelay configRelay;
 
     @Override
     public URL getURL() throws MalformedURLException {

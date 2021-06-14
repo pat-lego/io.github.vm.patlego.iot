@@ -3,6 +3,8 @@ package io.github.vm.patlego.iot.server.filters;
 import java.io.IOException;
 import java.net.MalformedURLException;
 import java.net.URL;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Optional;
@@ -18,6 +20,8 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import org.osgi.framework.BundleContext;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import io.github.vm.patlego.iot.server.authentication.Authentication;
 import io.github.vm.patlego.iot.server.authentication.jwt.Jwt;
@@ -28,6 +32,7 @@ import io.github.vm.patlego.iot.server.utils.WebAppHelper;
 public class AuthenticationFilter implements Filter {
 
     private final String URL = "/iot/patlego/login.html";
+    private Logger logger = LoggerFactory.getLogger(this.getClass());
 
     @Override
     public void init(FilterConfig filterConfig) throws ServletException {
@@ -56,6 +61,11 @@ public class AuthenticationFilter implements Filter {
                 try {
                     jwt = authentication.validate(authHeader);
                 } catch (Exception e) {
+                    DateTimeFormatter dtf = DateTimeFormatter.ofPattern("yyyy/MM/dd HH:mm:ss");
+                    LocalDateTime now = LocalDateTime.now();
+                    logger.info("Current date time " + dtf.format(now));
+
+                    logger.error(e.getMessage(), e);
                     httpResponse.setHeader("X-Authentication-Failure-Cause", "Invalid Token");
                     httpResponse.sendError(HttpServletResponse.SC_UNAUTHORIZED);
                 }
