@@ -1,5 +1,6 @@
 package io.github.vm.patlego.iot.server.dao.repo;
 
+import java.sql.Timestamp;
 import java.util.List;
 
 import io.github.vm.patlego.iot.server.dao.exceptions.InvalidSensorEventException;
@@ -12,4 +13,6 @@ public interface SensorEventDS {
     public SensorEvent getEvent(long id) throws InvalidSensorEventException;
 
     public List<SensorEvent> getEvents();
+
+    public int deleteEvent(Timestamp time);
 }

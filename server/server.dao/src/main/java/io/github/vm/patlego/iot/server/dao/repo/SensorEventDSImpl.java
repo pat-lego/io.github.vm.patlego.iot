@@ -1,7 +1,10 @@
 package io.github.vm.patlego.iot.server.dao.repo;
 
+import java.sql.Timestamp;
 import java.util.List;
 
+import javax.persistence.criteria.CriteriaBuilder;
+import javax.persistence.criteria.CriteriaDelete;
 import javax.persistence.criteria.CriteriaQuery;
 import javax.persistence.criteria.Root;
 
@@ -52,6 +55,18 @@ public class SensorEventDSImpl implements SensorEventDS {
 
             criteriaQuerySensorEvent.select(variableRoot);
             return emFunction.createQuery(criteriaQuerySensorEvent).getResultList();
+        });
+    }
+
+    @Override
+    public int deleteEvent(Timestamp time) {
+        return this.jpaTemplate.txExpr(TransactionType.RequiresNew, entityManager -> {
+            CriteriaBuilder cb = entityManager.getCriteriaBuilder();
+            CriteriaDelete<SensorEvent> query = cb.createCriteriaDelete(SensorEvent.class).where();
+            Root<SensorEvent> root = query.from(SensorEvent.class);
+            query.where(cb.lessThanOrEqualTo(root.get("time"), time));
+
+            return entityManager.createQuery(query).executeUpdate();
         });
     }
 
