@@ -41,7 +41,6 @@ public class ThreadManager {
     }
 
     private void init() throws IOException {
-        System.out.printf("About to build the threads map");
         ConfigFile configFile = this.readFile(this.clazz);
         for (Config config : configFile.getConfigs()) {
             try {
@@ -54,7 +53,6 @@ public class ThreadManager {
                     mThreadDTO.setmThread(mThread);
 
                     threads.put(config.getThread(), mThreadDTO);
-                    System.out.println(String.format("Created an instance of MThread named %s", mThreadDTO.getClass().getName()));
                 } else {
                     this.logger.info("The {} thread is already loaded skipping its instantiation since it is currently ", config.getThread());
                 }
