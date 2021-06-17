@@ -2,7 +2,8 @@ const events = Vue.createApp({
     el: '#app',
     data() {
         return {
-            sensordata: {}
+            sensordata: {},
+            search: ''
         }
     },
     async mounted() {
@@ -30,6 +31,22 @@ const events = Vue.createApp({
             if (!results) return null;
             if (!results[2]) return '';
             return decodeURIComponent(results[2].replace(/\+/g, ' '));
+        }
+    },
+    computed: {
+        filteredRows() {
+            if (this.search && this.search !== '') {
+                const results = Object.entries(this.sensordata).filter(entry => {
+                    // Deep clone the object 
+                    var copy = JSON.parse(JSON.stringify(entry));
+                    
+                    copy[1].time = this.getDate(entry[1].time);
+                    return JSON.stringify(copy[1]).includes(this.search);
+                });
+                return Object.fromEntries(results);
+            } else {
+                return this.sensordata;
+            }
         }
     }
 });
