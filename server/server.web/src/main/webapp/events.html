@@ -31,7 +31,7 @@
                         <th class="w-1/6">Thread</th>
                     </tr>
                 </thead>
-                <tbody class="flex flex-col w-full h-60 overflow-y-scroll">
+                <tbody class="flex flex-col w-full h-48 md:h-96 overflow-y-scroll">
                     <tr class="flex w-full p-2 pb-4 hover:bg-blue-100 items-center justify-between border-b-2"
                         v-for="sensor in filteredRows" :key="sensor">
                         <td class="w-1/6 text-center">{{sensor.sensorId}}</td>
