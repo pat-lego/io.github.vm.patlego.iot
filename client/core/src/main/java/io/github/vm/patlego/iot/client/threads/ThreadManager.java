@@ -54,7 +54,9 @@ public class ThreadManager {
 
                     threads.put(config.getThread(), mThreadDTO);
                 } else {
-                    this.logger.info("The {} thread is already loaded skipping its instantiation since it is currently ", config.getThread());
+                    this.logger.info(
+                            "The {} thread is already loaded skipping its instantiation since it is currently ",
+                            config.getThread());
                 }
             } catch (ClassNotFoundException e) {
                 this.logger.error("Was not able to load {} thread", config.getThread());
@@ -98,17 +100,19 @@ public class ThreadManager {
             this.init();
             this.logger.info("Thread Manager instantiated");
 
-            while (Boolean.TRUE.equals(!this.haltSystem()) && hasTimeoutElapsed(start, Instant.now(), configFile)) {
-                configFile = this.readFile(this.clazz);
+            while (true) {
+                if (Boolean.TRUE.equals(!this.haltSystem()) && hasTimeoutElapsed(start, Instant.now(), configFile)) {
+                    configFile = this.readFile(this.clazz);
 
-                this.logger.info("System is not haulted - continuing");
+                    this.logger.info("System is not haulted - continuing");
 
-                for (Map.Entry<String, MThreadDTO> entry : this.threads.entrySet()) {
-                    MThreadDTO mThreadDTO = entry.getValue();
-                    manageMThreadDTO(configFile, mThreadDTO);
+                    for (Map.Entry<String, MThreadDTO> entry : this.threads.entrySet()) {
+                        MThreadDTO mThreadDTO = entry.getValue();
+                        manageMThreadDTO(configFile, mThreadDTO);
+                    }
+
+                    Thread.sleep(this.sleep);
                 }
-
-                Thread.sleep(this.sleep);
             }
         } catch (InterruptedException e) {
             this.logger.error(
@@ -121,7 +125,8 @@ public class ThreadManager {
     private void manageMThreadDTO(ConfigFile configFile, MThreadDTO mThreadDTO) {
         Config config = configFile.getConfig(mThreadDTO.getmThread().getModule());
         if (config != null) {
-            if (config.isEnabled() && (mThreadDTO.getmThread().getState().equals(MThreadState.INITIALIZED) || mThreadDTO.getmThread().getState().equals(MThreadState.STOPPED))) {
+            if (config.isEnabled() && (mThreadDTO.getmThread().getState().equals(MThreadState.INITIALIZED)
+                    || mThreadDTO.getmThread().getState().equals(MThreadState.STOPPED))) {
                 Thread thread = new Thread(mThreadDTO.getmThread());
                 mThreadDTO.setThread(thread);
                 thread.start();
