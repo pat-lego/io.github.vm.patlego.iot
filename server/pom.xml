@@ -21,6 +21,7 @@
     <jwt.version>3.16.0</jwt.version>
     <core.version>1.0-SNAPSHOT</core.version>
     <jackson.version>2.12.3</jackson.version>
+    <hibernate-types.version>2.10.3</hibernate-types.version>
   </properties>
   <build>
     <pluginManagement>
@@ -83,6 +84,12 @@
         <groupId>javax.persistence</groupId>
         <artifactId>javax.persistence-api</artifactId>
         <version>2.2</version>
+        <scope>provided</scope>
+      </dependency>
+      <dependency>
+        <groupId>com.vladmihalcea</groupId>
+        <artifactId>hibernate-types-52</artifactId>
+        <version>${hibernate-types.version}</version>
         <scope>provided</scope>
       </dependency>
       <dependency>
