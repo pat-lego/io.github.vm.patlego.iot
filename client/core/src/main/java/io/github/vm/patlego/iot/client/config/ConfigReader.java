@@ -4,6 +4,6 @@ import java.util.List;
 
 public interface ConfigReader {
 
-    public List<Config> getConfigs();
+    public List<Config> getConfigs() throws Exception;
 
 }

@@ -21,7 +21,6 @@ import io.github.vm.patlego.iot.security.SimpleSecurity;
 public class SensorRelay extends HttpRelay {
 
     private Security security;
-    private CloseableHttpClient client = HttpClients.createDefault();
 
     private final String THREAD = "thread";
     private final String TYPE = "type";
@@ -55,7 +54,7 @@ public class SensorRelay extends HttpRelay {
 
     @Override
     public CloseableHttpResponse post(Config config, HttpMsg msg) throws RelayException {
-        try {
+        try(CloseableHttpClient client = HttpClients.createDefault()) {
             HttpPost post = new HttpPost(config.getSystem().getURL().toString());
             JsonObject body = new JsonObject();
             body.addProperty(TYPE, Types.PIR.toString());
