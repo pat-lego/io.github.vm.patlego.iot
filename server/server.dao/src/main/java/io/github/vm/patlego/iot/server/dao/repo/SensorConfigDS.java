@@ -4,6 +4,5 @@ import io.github.vm.patlego.iot.server.dao.tables.SensorConfig;
 
 public interface SensorConfigDS {
     
-
     public SensorConfig getConfig(long id);
 }

@@ -8,6 +8,7 @@ import org.osgi.service.component.annotations.Reference;
 import org.slf4j.Logger;
 
 import io.github.vm.patlego.iot.server.dao.tables.SensorConfig;
+import io.github.vm.patlego.iot.server.dao.tables.config.Config;
 
 @Component(service =  SensorConfigDS.class, immediate = true)
 public class SensorConfigDSImpl implements SensorConfigDS {
@@ -23,11 +24,4 @@ public class SensorConfigDSImpl implements SensorConfigDS {
             return emFunction.find(SensorConfig.class, id);
         });
     }
-
-    @Activate
-    protected void activate() {
-        SensorConfig config = this.getConfig(1L);
-        logger.info(config.getConfig());
-    }
-    
 }

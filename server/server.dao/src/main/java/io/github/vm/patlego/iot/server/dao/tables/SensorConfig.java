@@ -7,10 +7,13 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.Table;
 
+import com.google.gson.GsonBuilder;
 import com.vladmihalcea.hibernate.type.json.JsonBinaryType;
 
 import org.hibernate.annotations.Type;
 import org.hibernate.annotations.TypeDef;
+
+import io.github.vm.patlego.iot.server.dao.tables.config.Config;
 
 @Entity(name = "sensor_configs")
 @Table(name = "sensor_configs", schema = "patlegovm")
@@ -45,6 +48,8 @@ public class SensorConfig {
         this.config = config;
     }
 
-    
+    public static Config toConfig(String config) {
+        return new GsonBuilder().create().fromJson(config, MainConfig.class);
+    }
 
 }
