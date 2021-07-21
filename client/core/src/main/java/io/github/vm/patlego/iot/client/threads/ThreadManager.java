@@ -14,8 +14,8 @@ import org.slf4j.LoggerFactory;
 
 public abstract class ThreadManager {
 
-    // Sleep for 5 minutes
-    protected int sleep = 300000;
+    // Sleep for 1 minute
+    protected int sleep = 60000;
 
     protected Logger logger = LoggerFactory.getLogger(this.getClass());
 
@@ -55,7 +55,7 @@ public abstract class ThreadManager {
                     manageMThreadDTO(mThreadDTO, configs);
                 }
 
-                logger.info("All is good about to sleep the Thread Manager for 5 minutes");
+                logger.info("All is good about to sleep the Thread Manager for 1 minute");
                 // Sleep 5 minutes
                 Thread.sleep(this.sleep);
             }
