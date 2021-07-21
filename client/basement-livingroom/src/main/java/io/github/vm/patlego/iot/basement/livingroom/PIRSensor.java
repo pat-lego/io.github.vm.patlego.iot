@@ -93,14 +93,15 @@ public class PIRSensor extends MThread {
             Thread.currentThread().interrupt();
         } catch (Exception e) {
             this.state = MThreadState.FAILED;
-            logger.error("Caught exception when trying to run the PIR Sensor - set the state to failed");
+            logger.error("Caught exception when trying to run the PIR Sensor - set the state to failed", e);
         } finally {
             logger.info("GPIO is shutting down");
             if (pirSensor != null) {
                 pirSensor.removeAllListeners();
             }
             if (gpio != null) {
-                gpio.shutdown();
+                gpio.unprovisionPin(pirSensor);
+                gpio.removeAllListeners();
             }
         }
     }
