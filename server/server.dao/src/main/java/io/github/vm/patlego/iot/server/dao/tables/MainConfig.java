@@ -53,4 +53,10 @@ public class MainConfig implements Config {
         return false;
     }
 
+    @Override
+    public void setIsEnabled(boolean isEnabled) {
+       this.enable = isEnabled;
+        
+    }
+
 }

@@ -8,6 +8,7 @@ import javax.persistence.Id;
 import javax.persistence.Table;
 
 import com.google.gson.GsonBuilder;
+import com.google.gson.JsonObject;
 import com.vladmihalcea.hibernate.type.json.JsonBinaryType;
 
 import org.hibernate.annotations.Type;
@@ -59,8 +60,21 @@ public class SensorConfig {
         this.key = key;
     }
 
+    public String toString() {
+        String parsed = "[ \n" +
+                            "Id : %d \n" +
+                            "Config: %s \n" +
+                            "Key: %s \n" +
+                        "]";
+        return String.format(parsed, configId, config, key);
+    }
+
     public static Config toConfig(String config) {
         return new GsonBuilder().create().fromJson(config, MainConfig.class);
+    }
+
+    public static String toString(Config config) {
+        return new GsonBuilder().create().toJson(config);
     }
 
 }

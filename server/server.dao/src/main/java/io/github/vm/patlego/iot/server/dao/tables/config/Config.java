@@ -26,6 +26,8 @@ public interface Config {
      */
     public boolean isEnabled();
 
+    public void setIsEnabled(boolean isEnabled);
+
     public boolean equals(Object a);
 
     public int hashCode();
