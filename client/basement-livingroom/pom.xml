@@ -29,7 +29,7 @@
           <archive>
             <manifest>
               <addClasspath>true</addClasspath>
-              <mainClass>io.github.vm.patlego.iot.client.Main</mainClass>
+              <mainClass>io.github.vm.patlego.iot.basement.livingroom.Main</mainClass>
             </manifest>
           </archive>
           <descriptorRefs>
