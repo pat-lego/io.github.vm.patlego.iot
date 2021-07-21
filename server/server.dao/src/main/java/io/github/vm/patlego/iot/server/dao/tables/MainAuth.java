@@ -19,5 +19,15 @@ public class MainAuth implements Auth {
     public Boolean isEncrypted() {
        return Optional.ofNullable(this.isEncrypted).orElse(Boolean.FALSE);
     }
+
+   @Override
+   public void setAuthorization(String authorization) {
+     this.token = authorization;  
+   }
+
+   @Override
+   public void setIsEncrypted(Boolean isEncrypted) {
+      this.isEncrypted = isEncrypted;
+   }
     
 }

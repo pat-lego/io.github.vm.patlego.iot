@@ -32,6 +32,9 @@ public class SensorConfig {
     @Column(name = "sensor_config", columnDefinition = "JSONB", nullable = false)
     private String config;
 
+    @Column(name = "sensor_key", nullable = false)
+    private String key;
+
     public long getConfigId() {
         return configId;
     }
@@ -46,6 +49,14 @@ public class SensorConfig {
 
     public void setConfig(String config) {
         this.config = config;
+    }
+
+    public String getKey() {
+        return key;
+    }
+
+    public void setKey(String key) {
+        this.key = key;
     }
 
     public static Config toConfig(String config) {

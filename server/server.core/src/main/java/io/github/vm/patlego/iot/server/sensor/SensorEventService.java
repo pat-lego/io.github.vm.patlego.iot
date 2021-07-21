@@ -4,7 +4,7 @@ import java.util.List;
 
 import io.github.vm.patlego.iot.server.dao.tables.SensorEvent;
 
-public interface SensorService {
+public interface SensorEventService {
 
     public SensorEvent createSensorEvent(SensorEvent event);
 

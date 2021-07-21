@@ -26,18 +26,21 @@ public class SensorEventInterceptor extends AbstractPhaseInterceptor<Message> {
 
     @Override
     public void handleFault(Message message) {
-        Exception ex = message.getContent(Exception.class);
-        if (ex.getCause() instanceof InvalidSensorEventException) {
-            HttpServletResponse resp = (HttpServletResponse) message.getExchange().getInMessage()
-                    .get(AbstractHTTPDestination.HTTP_RESPONSE);
-            try (OutputStream out = resp.getOutputStream()) {
-                resp.setStatus(HttpServletResponse.SC_INTERNAL_SERVER_ERROR);
-                resp.setContentType("text/plain");
-                out.write(ex.getMessage().getBytes());
-                message.getInterceptorChain().setFaultObserver(null); // avoid return soap fault
-                message.getInterceptorChain().abort();
-            } catch (IOException e) {
-                logger.error("Failed to write error message to the response stream", e);
+        String url = (String) message.get(Message.REQUEST_URL);
+        if (url.contains("/cxf/sensors/events")) {
+            Exception ex = message.getContent(Exception.class);
+            if (ex.getCause() instanceof InvalidSensorEventException) {
+                HttpServletResponse resp = (HttpServletResponse) message.getExchange().getInMessage()
+                        .get(AbstractHTTPDestination.HTTP_RESPONSE);
+                try (OutputStream out = resp.getOutputStream()) {
+                    resp.setStatus(HttpServletResponse.SC_INTERNAL_SERVER_ERROR);
+                    resp.setContentType("text/plain");
+                    out.write(ex.getMessage().getBytes());
+                    message.getInterceptorChain().setFaultObserver(null); // avoid return soap fault
+                    message.getInterceptorChain().abort();
+                } catch (IOException e) {
+                    logger.error("Failed to write error message to the response stream", e);
+                }
             }
         }
     }
