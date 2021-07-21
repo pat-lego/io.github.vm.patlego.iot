@@ -18,7 +18,7 @@ public class UpdateSensorConfig implements Action {
     @Argument(index = 0, name = "configId", description = "The Sensor Config ID to update", required = true, multiValued = false)
     public int id = 0;
 
-    @Argument(index = 1, name = "enabled", description = "Disable or enable the sesor", required = true, multiValued = false)
+    @Argument(index = 1, name = "enabled", description = "Disable or enable the sensor", required = true, multiValued = false)
     public Boolean enabled = null;
 
     @Reference
