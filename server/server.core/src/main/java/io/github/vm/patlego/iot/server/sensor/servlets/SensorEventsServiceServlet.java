@@ -19,20 +19,20 @@ import io.github.vm.patlego.enc.Security;
 import io.github.vm.patlego.iot.server.dao.exceptions.InvalidSensorEventException;
 import io.github.vm.patlego.iot.server.dao.repo.SensorEventDS;
 import io.github.vm.patlego.iot.server.dao.tables.SensorEvent;
-import io.github.vm.patlego.iot.server.sensor.SensorService;
+import io.github.vm.patlego.iot.server.sensor.SensorEventService;
 import io.github.vm.patlego.iot.server.sensor.SensorServletPath;
 import io.github.vm.patlego.iot.server.sensor.SensorUtils;
 import io.github.vm.patlego.sms.sender.SMSService;
 import io.github.vm.patlego.sms.sender.bean.SMSMessage;
 
 @Path(SensorServletPath.SENSOR_PATH)
-public class SensorServiceServlet implements SensorService {
+public class SensorEventsServiceServlet implements SensorEventService {
 
     private SensorEventDS sensorEventDS;
     private SMSService smsService;
     private Security securityService;
 
-    public SensorServiceServlet(SensorEventDS sensorEventDS, SMSService smsService, Security securityService) {
+    public SensorEventsServiceServlet(SensorEventDS sensorEventDS, SMSService smsService, Security securityService) {
         this.sensorEventDS = sensorEventDS;
         this.smsService = smsService;
         this.securityService = securityService;

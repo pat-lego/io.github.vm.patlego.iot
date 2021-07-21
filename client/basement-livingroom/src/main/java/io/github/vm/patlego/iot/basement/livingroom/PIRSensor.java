@@ -1,8 +1,5 @@
 package io.github.vm.patlego.iot.basement.livingroom;
 
-import java.time.Duration;
-import java.time.Instant;
-
 import com.pi4j.io.gpio.GpioController;
 import com.pi4j.io.gpio.GpioFactory;
 import com.pi4j.io.gpio.GpioPinDigitalInput;
@@ -12,9 +9,10 @@ import com.pi4j.io.gpio.event.GpioPinDigitalStateChangeEvent;
 import com.pi4j.io.gpio.event.GpioPinListenerDigital;
 
 import org.apache.http.client.methods.CloseableHttpResponse;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import io.github.vm.patlego.iot.client.MThread;
-import io.github.vm.patlego.iot.client.MainConfigLog;
 import io.github.vm.patlego.iot.client.config.Config;
 import io.github.vm.patlego.iot.client.relay.Relay;
 import io.github.vm.patlego.iot.client.relay.RelayException;
@@ -25,11 +23,14 @@ public class PIRSensor extends MThread {
 
     private GpioController gpio;
     private GpioPinDigitalInput pirSensor;
+    
+    protected Logger logger = LoggerFactory.getLogger(this.getClass());
+
     private static final long SENSOR_TIMEOUT = 10000;
     private Boolean interrupt = false;
-
+    
     public PIRSensor(Config config) {
-        super(config, new MainConfigLog());
+        super(config);
     }
 
     private void init() {
@@ -43,9 +44,9 @@ public class PIRSensor extends MThread {
         try {
             this.state = MThreadState.RUNNING;
         
-            this.configLog.getLogger().info("Allowing PIR Sensor to warm up sensor before initiating listeners");
+            this.logger.info("Allowing PIR Sensor to warm up sensor before initiating listeners");
             Thread.sleep(120000);
-            this.configLog.getLogger().info("Sensor has been configured and setup will proceed");
+            this.logger.info("Sensor has been configured and setup will proceed");
 
             // Incase the program stopped allow for a clean start
             init();
@@ -59,22 +60,21 @@ public class PIRSensor extends MThread {
                             CloseableHttpResponse response = (CloseableHttpResponse) relay.execute(config, null);
 
                             if ((response.getStatusLine().getStatusCode() / 100) != 2) {
-                                configLog.getLogger()
-                                        .error(String.format("Received an error when invoking the relay for %s",
+                                logger.error(String.format("Received an error when invoking the relay for %s",
                                                 config.getSystem().getRelay().getClassPath()));
                             } else {
-                                configLog.getLogger().info(String.format("Successfully invoked the relay for %s",
+                                logger.info(String.format("Successfully invoked the relay for %s",
                                         config.getSystem().getRelay().getClassPath()));
                             }
                         }
                     } catch (RelayException e) {
-                        configLog.getLogger().error("Failed to submit event data to server", e);
+                        logger.error("Failed to submit event data to server", e);
                     } catch (RelayInstantiationException e) {
-                        configLog.getLogger().error("Failed to instantiate relay - setting thread to FAILED", e);
+                        logger.error("Failed to instantiate relay - setting thread to FAILED", e);
                         state = MThreadState.FAILED;
                         interrupt = Boolean.TRUE;
                     } catch (Exception e) {
-                        configLog.getLogger().error("Caught generic exception - setting thread to FAILED", e);
+                        logger.error("Caught generic exception - setting thread to FAILED", e);
                         state = MThreadState.FAILED;
                         interrupt = Boolean.TRUE;
                     }
@@ -82,22 +82,19 @@ public class PIRSensor extends MThread {
             });
 
             while (Boolean.TRUE.equals(this.keepRunning()) && Boolean.FALSE.equals(interrupt)) {
-                this.configLog.getLogger().info(String.format("About to sleep PIR Sensor for %d ms", SENSOR_TIMEOUT));
+                logger.info(String.format("About to sleep PIR Sensor for %d ms", SENSOR_TIMEOUT));
                 Thread.sleep(SENSOR_TIMEOUT);
-                this.configLog.getLogger()
-                        .info(String.format("Waking up PIR Sensor after sleeping for %d ms", SENSOR_TIMEOUT));
+                logger.info(String.format("Waking up PIR Sensor after sleeping for %d ms", SENSOR_TIMEOUT));
             }
         } catch (InterruptedException e) {
             this.state = MThreadState.STOPPED;
-            this.configLog.getLogger()
-                    .error("Caught interruption when trying to run the PIR Sensor - set the state to stopped");
+            logger.error("Caught interruption when trying to run the PIR Sensor - set the state to stopped");
             Thread.currentThread().interrupt();
         } catch (Exception e) {
             this.state = MThreadState.FAILED;
-            this.configLog.getLogger()
-                    .error("Caught exception when trying to run the PIR Sensor - set the state to failed");
+            logger.error("Caught exception when trying to run the PIR Sensor - set the state to failed");
         } finally {
-            this.configLog.getLogger().info("GPIO is shutting down");
+            logger.info("GPIO is shutting down");
             if (pirSensor != null) {
                 pirSensor.removeAllListeners();
             }
@@ -109,6 +106,6 @@ public class PIRSensor extends MThread {
 
     @Override
     public String getModule() {
-        return "Basement Living Room";
+        return this.config.getModule();
     }
 }

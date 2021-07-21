@@ -27,6 +27,7 @@
         <non-jta-data-source>osgi:service/javax.sql.DataSource/(osgi.jndi.service.name=karafdb)</non-jta-data-source>
         
         <class>io.github.vm.patlego.iot.server.dao.tables.SensorEvent</class>
+        <class>io.github.vm.patlego.iot.server.dao.tables.SensorConfig</class>
         <properties>
             <property name="hibernate.dialect" value="org.hibernate.dialect.PostgreSQLDialect"/>
             <property name="hibernate.hbm2ddl.auto" value="validate"/>

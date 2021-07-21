@@ -44,6 +44,8 @@
           <exportScr>true</exportScr>
           <instructions>
             <Meta-Persistence>META-INF/persistence.xml</Meta-Persistence>
+            <Embed-Dependency>hibernate-types-52, jackson-core, jackson-databind, jackson-datatype-jsr310, jackson-annotations</Embed-Dependency>
+            <Private-Package>com.vladmihalcea.hibernate.type.*</Private-Package>
             <Import-Package>
               !javax.annotation, javax.persistence;version="[2,3)",
               *</Import-Package>
@@ -85,6 +87,30 @@
     <dependency>
       <groupId>javax.persistence</groupId>
       <artifactId>javax.persistence-api</artifactId>
+    </dependency>
+    <dependency>
+      <groupId>com.vladmihalcea</groupId>
+      <artifactId>hibernate-types-52</artifactId>
+    </dependency>
+    <dependency>
+      <groupId>com.fasterxml.jackson.core</groupId>
+      <artifactId>jackson-core</artifactId>
+    </dependency>
+    <dependency>
+      <groupId>com.fasterxml.jackson.core</groupId>
+      <artifactId>jackson-databind</artifactId>
+    </dependency>
+    <dependency>
+      <groupId>com.fasterxml.jackson.datatype</groupId>
+      <artifactId>jackson-datatype-jsr310</artifactId>
+    </dependency>
+    <dependency>
+      <groupId>com.fasterxml.jackson.core</groupId>
+      <artifactId>jackson-annotations</artifactId>
+    </dependency>
+    <dependency>
+      <groupId>com.google.code.gson</groupId>
+      <artifactId>gson</artifactId>
     </dependency>
   </dependencies>
 </project>
