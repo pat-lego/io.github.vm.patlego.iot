@@ -5,7 +5,7 @@ import io.github.vm.patlego.iot.client.config.ConfigRelay;
 public class MainConfigRelay implements ConfigRelay {
 
     private String type;
-    private String clazz;
+    private String classPath;
 
     @Override
     public String getType() {
@@ -25,7 +25,7 @@ public class MainConfigRelay implements ConfigRelay {
 
     @Override
     public String getClassPath() {
-       return this.clazz;
+       return this.classPath;
     }
 
 }

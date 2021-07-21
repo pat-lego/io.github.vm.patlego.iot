@@ -14,6 +14,8 @@ import org.apache.http.client.methods.HttpGet;
 import org.apache.http.impl.client.CloseableHttpClient;
 import org.apache.http.impl.client.HttpClients;
 import org.apache.http.util.EntityUtils;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import io.github.vm.patlego.iot.client.MainConfig;
 import io.github.vm.patlego.iot.client.config.Config;
@@ -22,7 +24,6 @@ import io.github.vm.patlego.iot.client.config.ConfigReader;
 public class BasementConfigReader implements ConfigReader {
 
     private final String AUTHORIZATION = "Authorization";
-
     private String url = "https://www.pat-lego.com/cxf/sensors/configs/1";
 
     @Override

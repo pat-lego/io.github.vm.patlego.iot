@@ -19,7 +19,9 @@ The `Relay` class can be used to send Http transactions to an external server we
 Start the jar with the following command
 
 ```
-java -jar client.core-<version>.jar --config <path>/config.json
+java -jar client.core-<version>.jar
 ```
 
-Sample config.json files can be found in the resource folder.
+## Create systemd Service
+
+In order to create a systemd service with the Raspberry Pi follow the given [documentation](https://www.raspberrypi.org/documentation/linux/usage/systemd.md).

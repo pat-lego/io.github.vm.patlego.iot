@@ -7,12 +7,11 @@ import io.github.vm.patlego.iot.client.config.Auth;
 import io.github.vm.patlego.iot.client.config.ConfigRelay;
 import io.github.vm.patlego.iot.client.config.ConfigSystem;
 
-public class MainSystem implements ConfigSystem {
+public class MainConfigSystem implements ConfigSystem {
 
     private String url;
-    private Boolean hasAuth;
     private MainAuth auth;
-    private MainConfigRelay configRelay;
+    private MainConfigRelay relay;
 
     @Override
     public URL getURL() throws MalformedURLException {
@@ -21,7 +20,7 @@ public class MainSystem implements ConfigSystem {
 
     @Override
     public Boolean hasAuth() {
-        return this.hasAuth;
+        return this.auth != null;
     }
 
     @Override
@@ -31,7 +30,7 @@ public class MainSystem implements ConfigSystem {
 
     @Override
     public ConfigRelay getRelay() {
-        return this.configRelay;
+        return this.relay;
     }
     
 }

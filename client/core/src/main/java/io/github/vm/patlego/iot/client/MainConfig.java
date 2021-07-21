@@ -9,8 +9,8 @@ public class MainConfig implements Config {
 
     private String module;
     private String thread;
-    private Boolean enable;
-    private MainSystem system;
+    private Boolean enabled;
+    private MainConfigSystem system;
 
     @Override
     public String getModule() {
@@ -29,7 +29,7 @@ public class MainConfig implements Config {
 
     @Override
     public boolean isEnabled() {
-        return Optional.ofNullable(this.enable).orElse(Boolean.FALSE);
+        return Optional.ofNullable(this.enabled).orElse(Boolean.FALSE);
     }
 
     @Override

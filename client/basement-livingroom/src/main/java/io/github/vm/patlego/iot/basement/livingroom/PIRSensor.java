@@ -31,6 +31,8 @@ public class PIRSensor extends MThread {
     
     public PIRSensor(Config config) {
         super(config);
+
+        this.state = MThreadState.INITIALIZED;
     }
 
     private void init() {
@@ -40,7 +42,6 @@ public class PIRSensor extends MThread {
 
     @Override
     public void run() {
-
         try {
             this.state = MThreadState.RUNNING;
         

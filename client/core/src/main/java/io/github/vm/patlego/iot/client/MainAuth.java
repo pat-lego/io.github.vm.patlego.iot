@@ -6,17 +6,17 @@ import io.github.vm.patlego.iot.client.config.Auth;
 
 public class MainAuth implements Auth {
 
-    private String token;
-    private Boolean isEncrypted;
+    private String authorization;
+    private Boolean encrypted;
 
     @Override
     public String getAuthorization() {
-       return this.token;
+       return this.authorization;
     }
 
     @Override
     public Boolean isEncrypted() {
-       return Optional.ofNullable(this.isEncrypted).orElse(Boolean.FALSE);
+       return Optional.ofNullable(this.encrypted).orElse(Boolean.FALSE);
     }
     
 }
