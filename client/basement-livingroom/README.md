@@ -8,4 +8,6 @@ Sensor is enabled on boot using systemd service following [this](https://www.ras
 
 ## Sensor Log
 
-PIR Sensor Log `journalctl -u basement.service`
+PIR Sensor Log `journalctl -u basement.service` or `journalctl -u basement.service -f` to follow the tail of the log.
+
+Refer [here](`journalctl -u basement.service`) for some really good examples.
