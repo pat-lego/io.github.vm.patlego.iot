@@ -74,6 +74,9 @@ public abstract class ThreadManager {
         if (config != null) {
             logger.info(String.format("About to manage thread module %s", config.getModule()));
 
+            logger.info(String.format("Updated the config for thread module %s", config.getModule()));
+            mThreadDTO.getmThread().updateConfig(config);
+
             if (config.isEnabled() && (mThreadDTO.getmThread().getState().equals(MThreadState.INITIALIZED)
                     || mThreadDTO.getmThread().getState().equals(MThreadState.STOPPED))) {
                 logger.info(String.format("About to start thread module %s", config.getModule()));
@@ -86,9 +89,6 @@ public abstract class ThreadManager {
                 logger.info(String.format("About to stop thread module %s", config.getModule()));
                 mThreadDTO.getThread().interrupt();
             }
-            
-            logger.info(String.format("Updated the config for thread module %s", config.getModule()));
-            mThreadDTO.getmThread().updateConfig(config);
         }
     }
 
