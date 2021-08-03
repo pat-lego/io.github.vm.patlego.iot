@@ -67,8 +67,12 @@ public class SensorConfig {
                             "Config: %s \n" +
                             "Key: %s \n" +
                         "]";
+        return String.format(parsed, configId, prettyPrintConfig(config), key);
+    }
+
+    public static String prettyPrintConfig(String config) {
         JsonObject configJson = JsonParser.parseString(config).getAsJsonObject();
-        return String.format(parsed, configId, new GsonBuilder().setPrettyPrinting().create().toJson(configJson), key);
+        return new GsonBuilder().setPrettyPrinting().create().toJson(configJson);
     }
 
     public static Config toConfig(String config) {
