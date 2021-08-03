@@ -66,7 +66,7 @@ public class SensorConfig {
                             "Config: %s \n" +
                             "Key: %s \n" +
                         "]";
-        return String.format(parsed, configId, new GsonBuilder().setPrettyPrinting().create().toJson(config), key);
+        return String.format(parsed, configId, config, key);
     }
 
     public static Config toConfig(String config) {
