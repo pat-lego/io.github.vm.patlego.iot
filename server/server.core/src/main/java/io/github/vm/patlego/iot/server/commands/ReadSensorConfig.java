@@ -1,6 +1,5 @@
 package io.github.vm.patlego.iot.server.commands;
 
-import org.apache.commons.lang3.StringUtils;
 import org.apache.karaf.shell.api.action.Action;
 import org.apache.karaf.shell.api.action.Argument;
 import org.apache.karaf.shell.api.action.Command;
