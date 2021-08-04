@@ -14,8 +14,8 @@ import org.slf4j.LoggerFactory;
 
 public abstract class ThreadManager {
 
-    // Sleep for 1 minute
-    protected int sleep = 60000;
+    // Sleep for 5 minutes
+    protected int sleep = 300000;
 
     protected Logger logger = LoggerFactory.getLogger(this.getClass());
 
@@ -47,7 +47,6 @@ public abstract class ThreadManager {
 
             logger.info("Thread map initialized about to start thread invocation");
             while (true) {
-                // Get the latest configs every 5 minutes
                 logger.info("About to retrieve updated configurations for sensors");
                 List<Config> configs = configReader.getConfigs();
                 for (Map.Entry<String, MThreadDTO> entry : threads.entrySet()) {
@@ -55,8 +54,8 @@ public abstract class ThreadManager {
                     manageMThreadDTO(mThreadDTO, configs);
                 }
 
-                logger.info(String.format("All is good about to sleep the Thread Manager for %d minute", (sleep / (1000 * 60))));
-                // Sleep 5 minutes
+                logger.info(String.format("All is good about to sleep the Thread Manager for %d minutes",
+                        (sleep / (1000 * 60))));
                 Thread.sleep(this.sleep);
             }
         } catch (InterruptedException e) {
@@ -67,10 +66,9 @@ public abstract class ThreadManager {
     }
 
     protected void manageMThreadDTO(MThreadDTO mThreadDTO, List<Config> configs) {
-
         Config config = configs.stream().filter(c -> c.getModule().equals(mThreadDTO.getmThread().getModule()))
                 .findFirst().orElse(null);
-        
+
         if (config != null) {
             logger.info(String.format("About to manage thread module %s", config.getModule()));
 
