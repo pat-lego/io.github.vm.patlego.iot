@@ -17,9 +17,8 @@ public class PIRSensor extends MThread {
 
     private GpioController gpio;
     private GpioPinDigitalInput pirSensorPin;
-
-    // Sleep for 10 seconds
-    private static final long SENSOR_TIMEOUT = 10000;
+    
+    private static final long SENSOR_TIMEOUT = 5000;
 
     public PIRSensor(Config config) {
         super(config);
@@ -39,10 +38,7 @@ public class PIRSensor extends MThread {
             // Incase the program stopped allow for a clean start
             init();
 
-            logger.info(String.format("The config for the PiR sensor is set to %s with respect to the enabled field", this.keepRunning().toString()));
-            
             while (Boolean.TRUE.equals(this.keepRunning())) {
-                logger.info(String.format("About to sleep PIR Sensor for %d ms", SENSOR_TIMEOUT));
                 if (pirSensorPin.isHigh()) {
                     Relay relay = getRelay(config.getSystem());
                     CloseableHttpResponse response = (CloseableHttpResponse) relay.execute(config, null);
@@ -56,7 +52,6 @@ public class PIRSensor extends MThread {
                     }
                 }
                 Thread.sleep(SENSOR_TIMEOUT);
-                logger.info(String.format("Waking up PIR Sensor after sleeping for %d ms", (SENSOR_TIMEOUT / 10)));
             }
         } catch (InterruptedException e) {
             this.state = MThreadState.STOPPED;
