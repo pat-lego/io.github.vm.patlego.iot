@@ -18,7 +18,7 @@ public class PIRSensor extends MThread {
     private GpioController gpio;
     private GpioPinDigitalInput pirSensorPin;
     
-    private static final long SENSOR_TIMEOUT = 5000;
+    private static final long SENSOR_TIMEOUT = 10000;
 
     public PIRSensor(Config config) {
         super(config);
