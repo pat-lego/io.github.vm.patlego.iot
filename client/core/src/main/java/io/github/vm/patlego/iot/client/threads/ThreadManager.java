@@ -55,7 +55,7 @@ public abstract class ThreadManager {
                     manageMThreadDTO(mThreadDTO, configs);
                 }
 
-                logger.info("All is good about to sleep the Thread Manager for 1 minute");
+                logger.info(String.format("All is good about to sleep the Thread Manager for %d minute", (sleep / (1000 * 60))));
                 // Sleep 5 minutes
                 Thread.sleep(this.sleep);
             }

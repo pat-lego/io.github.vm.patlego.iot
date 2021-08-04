@@ -56,7 +56,7 @@ public class PIRSensor extends MThread {
                     }
                 }
                 Thread.sleep(SENSOR_TIMEOUT);
-                logger.info(String.format("Waking up PIR Sensor after sleeping for %d ms", SENSOR_TIMEOUT));
+                logger.info(String.format("Waking up PIR Sensor after sleeping for %d ms", (SENSOR_TIMEOUT / 10)));
             }
         } catch (InterruptedException e) {
             this.state = MThreadState.STOPPED;
