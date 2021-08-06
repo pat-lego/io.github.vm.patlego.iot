@@ -66,7 +66,7 @@ public class PIRSensor extends MThread {
     }
 
     @Override
-    public final String getModule() {
-        return "Basement Living Room";
+    public final String getClassPath() {
+        return PIRSensor.class.getName();
     }
 }

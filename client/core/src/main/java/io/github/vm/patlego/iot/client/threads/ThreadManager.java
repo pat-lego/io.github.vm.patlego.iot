@@ -61,7 +61,7 @@ public abstract class ThreadManager {
 
     protected void manageMThreadDTO(MThreadDTO mThreadDTO) {
         if (!mThreadDTO.getmThread().getState().equals(MThreadState.RUNNING)) {
-            logger.info(String.format("The %s module has received a %s MThreadState going to restart the thread", mThreadDTO.getmThread().getModule(), mThreadDTO.getmThread().getState().name()));
+            logger.info(String.format("The %s thread has received a %s MThreadState going to restart the thread", mThreadDTO.getmThread().getClassPath(), mThreadDTO.getmThread().getState().name()));
             Thread thread = new Thread(mThreadDTO.getmThread());
             mThreadDTO.setThread(thread);
             thread.start();

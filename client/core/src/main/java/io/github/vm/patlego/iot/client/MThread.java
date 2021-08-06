@@ -28,7 +28,7 @@ public abstract class MThread implements Runnable {
         this.configReader = configReader;
     }
 
-    public abstract String getModule();
+    public abstract String getClassPath();
 
     public Relay getRelay(ConfigSystem configSystem) throws RelayInstantiationException {
         try {
@@ -47,6 +47,6 @@ public abstract class MThread implements Runnable {
     }
 
     public Config getConfig() throws Exception {
-        return this.configReader.getConfigs().stream().filter(c -> c.getModule().equals(this.getModule())).findFirst().orElse(null);
+        return this.configReader.getConfigs().stream().filter(c -> c.getModule().equals(this.getClassPath())).findFirst().orElse(null);
     }
 }
