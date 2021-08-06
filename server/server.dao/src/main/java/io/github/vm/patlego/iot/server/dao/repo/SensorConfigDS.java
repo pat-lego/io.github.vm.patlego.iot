@@ -6,5 +6,7 @@ public interface SensorConfigDS {
     
     public SensorConfig getConfig(long id);
 
+    public SensorConfig getConfigByThreadName(String name);
+
     public SensorConfig updateConfig(SensorConfig sensorConfig);
 }
