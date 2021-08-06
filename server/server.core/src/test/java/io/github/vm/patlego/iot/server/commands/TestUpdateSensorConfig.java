@@ -19,7 +19,7 @@ public class TestUpdateSensorConfig {
 
         updateSensor.sensorConfigDS = configDS;
         updateSensor.id = 1L;
-        updateSensor.jsonPath = "$..logEntry";
+        updateSensor.jsonPath = "..logEntry";
         updateSensor.value = "Bool:False";
 
         updateSensor.execute();

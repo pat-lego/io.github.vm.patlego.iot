@@ -8,6 +8,7 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.Table;
+import javax.persistence.Transient;
 
 @Entity(name = "sensor_event")
 @Table(name = "sensor_event", schema = "patlegovm")
@@ -29,6 +30,17 @@ public class SensorEvent {
 
     @Column(name = "thread", nullable = false, unique = false)
     private String thread;
+
+    @Transient
+    private long sensorConfigId;
+
+    public long getSensorConfigId() {
+        return sensorConfigId;
+    }
+
+    public void setSensorConfigId(long sensorConfigId) {
+        this.sensorConfigId = sensorConfigId;
+    }
 
     public long getSensorId() {
         return sensorId;

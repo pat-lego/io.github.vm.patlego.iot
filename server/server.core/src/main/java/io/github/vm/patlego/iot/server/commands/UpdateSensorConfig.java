@@ -6,27 +6,21 @@ import com.jayway.jsonpath.Configuration;
 import com.jayway.jsonpath.JsonPath;
 import com.jayway.jsonpath.Option;
 
-import org.apache.commons.lang3.StringUtils;
 import org.apache.karaf.shell.api.action.Action;
 import org.apache.karaf.shell.api.action.Argument;
 import org.apache.karaf.shell.api.action.Command;
 import org.apache.karaf.shell.api.action.lifecycle.Reference;
 import org.apache.karaf.shell.api.action.lifecycle.Service;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 import io.github.vm.patlego.iot.server.commands.argument.Property;
 import io.github.vm.patlego.iot.server.commands.argument.PropertyException;
 import io.github.vm.patlego.iot.server.commands.argument.SimpleProperty;
 import io.github.vm.patlego.iot.server.dao.repo.SensorConfigDS;
 import io.github.vm.patlego.iot.server.dao.tables.SensorConfig;
-import io.github.vm.patlego.iot.server.dao.tables.config.Config;
 
 @Service
 @Command(scope = "iot", name = "update-sensor-config", description = "Update data within the Sensor Confg")
 public class UpdateSensorConfig implements Action {
-
-    private Logger logger = LoggerFactory.getLogger(this.getClass());
 
     @Argument(index = 0, name = "configId", description = "The Sensor Config ID to update", required = true, multiValued = false)
     public long id = 0;
@@ -34,7 +28,7 @@ public class UpdateSensorConfig implements Action {
     @Argument(index = 1, name = "jsonPath", description = "Json Path for the given config. Note that the config must resolve to a singular property within the Json object", required = true, multiValued = false)
     public String jsonPath = null;
 
-    @Argument(index = 1, name = "value", description = "The value to set at the given jsonPath prefix, if the jsonPath does not resolve then nothing is updated", required = true, multiValued = false)
+    @Argument(index = 2, name = "value", description = "The value to set at the given jsonPath prefix, if the jsonPath does not resolve then nothing is updated", required = true, multiValued = false)
     public String value = null;
 
     @Reference
@@ -49,7 +43,8 @@ public class UpdateSensorConfig implements Action {
         if (sensorConfig == null) {
             return "The given id did not return any results in the system";
         }
-
+        
+        jsonPath = String.format("$%s", jsonPath);
         List<String> results = JsonPath.using(conf).parse(sensorConfig.getConfig()).read(jsonPath);
 
         if (results.isEmpty()) {

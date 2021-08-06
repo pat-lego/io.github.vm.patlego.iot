@@ -49,7 +49,7 @@ public class SensorRestService {
         bean.setAddress(SensorServicePath.SENSOR_PATH);
         bean.setBus(BusFactory.getDefaultBus());
         bean.setProvider(new JacksonJsonProvider());
-        bean.setServiceBean(new SensorEventsServiceServlet(sensorEventDS, smsService, securityService));
+        bean.setServiceBean(new SensorEventsServiceServlet(sensorEventDS, smsService, securityService, sensorConfigDS));
         bean.setServiceBean(new SensorConfigsServiceServlet(jwtAuthentication, sensorConfigDS, securityService));
             
         server = bean.create();

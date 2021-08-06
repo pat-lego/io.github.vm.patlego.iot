@@ -25,6 +25,7 @@ public class SensorRelay extends HttpRelay {
     private final String THREAD = "thread";
     private final String TYPE = "type";
     private final String LOCATION = "location";
+    private final String SENSOR_CONFIG_ID = "sensorConfigId";
 
     public SensorRelay() {
         this.security = new SimpleSecurity();
@@ -60,6 +61,7 @@ public class SensorRelay extends HttpRelay {
             body.addProperty(TYPE, Types.PIR.toString());
             body.addProperty(LOCATION, "BASEMENT");
             body.addProperty(THREAD, config.getThread());
+            body.addProperty(SENSOR_CONFIG_ID, 1);
 
             post.setEntity(new StringEntity(body.toString()));
             post.setHeader("Accept", "application/json");
