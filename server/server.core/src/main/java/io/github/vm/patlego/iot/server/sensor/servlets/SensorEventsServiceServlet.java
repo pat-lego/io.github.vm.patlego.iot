@@ -44,6 +44,7 @@ public class SensorEventsServiceServlet implements SensorEventService {
     @POST
     @Override
     public SensorEvent createSensorEvent(SensorEvent event) {
+        
         event.setTime(Timestamp.valueOf(LocalDateTime.now(ZoneId.of("America/New_York"))));
         SMSMessage smsMessage = new SMSMessage() {
 

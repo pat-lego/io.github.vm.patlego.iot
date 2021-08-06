@@ -20,13 +20,9 @@ public interface Config {
      */
     public ConfigSystem getSystem();
 
-    /**
-     * Determines if this module is enabled for the given system
-     * @return
-     */
-    public boolean isEnabled();
+    public Boolean enableDBLogging();
 
-    public void setIsEnabled(boolean isEnabled);
+    public Boolean enableSms();
 
     public boolean equals(Object a);
 

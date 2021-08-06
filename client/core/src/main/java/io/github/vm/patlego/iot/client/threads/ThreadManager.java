@@ -14,7 +14,7 @@ import org.slf4j.LoggerFactory;
 
 public abstract class ThreadManager {
 
-    protected int sleep = 3600000;
+    protected int sleep = 1000;
 
     protected Logger logger = LoggerFactory.getLogger(this.getClass());
 
@@ -46,15 +46,10 @@ public abstract class ThreadManager {
 
             logger.info("Thread map initialized about to start thread invocation");
             while (true) {
-                logger.info("About to retrieve updated configurations for sensors");
-                List<Config> configs = configReader.getConfigs();
                 for (Map.Entry<String, MThreadDTO> entry : threads.entrySet()) {
                     MThreadDTO mThreadDTO = entry.getValue();
-                    manageMThreadDTO(mThreadDTO, configs);
+                    manageMThreadDTO(mThreadDTO);
                 }
-
-                logger.info(String.format("All is good about to sleep the Thread Manager for %d hour",
-                        (sleep / (1000 * 60 * 60))));
                 Thread.sleep(this.sleep);
             }
         } catch (InterruptedException e) {
@@ -64,28 +59,12 @@ public abstract class ThreadManager {
         }
     }
 
-    protected void manageMThreadDTO(MThreadDTO mThreadDTO, List<Config> configs) {
-        Config config = configs.stream().filter(c -> c.getModule().equals(mThreadDTO.getmThread().getModule()))
-                .findFirst().orElse(null);
-
-        if (config != null) {
-            logger.info(String.format("About to manage thread module %s", config.getModule()));
-
-            logger.info(String.format("Updated the config for thread module %s", config.getModule()));
-            mThreadDTO.getmThread().updateConfig(config);
-
-            if (config.isEnabled() && (mThreadDTO.getmThread().getState().equals(MThreadState.INITIALIZED)
-                    || mThreadDTO.getmThread().getState().equals(MThreadState.STOPPED))) {
-                logger.info(String.format("About to start thread module %s", config.getModule()));
-                Thread thread = new Thread(mThreadDTO.getmThread());
-                mThreadDTO.setThread(thread);
-                thread.start();
-            }
-
-            if (!config.isEnabled() && mThreadDTO.getmThread().getState().equals(MThreadState.RUNNING)) {
-                logger.info(String.format("About to stop thread module %s", config.getModule()));
-                mThreadDTO.getThread().interrupt();
-            }
+    protected void manageMThreadDTO(MThreadDTO mThreadDTO) {
+        if (!mThreadDTO.getmThread().getState().equals(MThreadState.RUNNING)) {
+            logger.info(String.format("The %s module has received a %s MThreadState going to restart the thread", mThreadDTO.getmThread().getModule(), mThreadDTO.getmThread().getState().name()));
+            Thread thread = new Thread(mThreadDTO.getmThread());
+            mThreadDTO.setThread(thread);
+            thread.start();
         }
     }
 

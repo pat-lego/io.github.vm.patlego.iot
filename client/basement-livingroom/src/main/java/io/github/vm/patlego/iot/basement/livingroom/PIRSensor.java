@@ -1,6 +1,5 @@
 package io.github.vm.patlego.iot.basement.livingroom;
 
-
 import com.pi4j.io.gpio.GpioController;
 import com.pi4j.io.gpio.GpioPinDigitalInput;
 import com.pi4j.io.gpio.PinPullResistance;
@@ -10,6 +9,7 @@ import org.apache.http.client.methods.CloseableHttpResponse;
 
 import io.github.vm.patlego.iot.client.MThread;
 import io.github.vm.patlego.iot.client.config.Config;
+import io.github.vm.patlego.iot.client.config.ConfigReader;
 import io.github.vm.patlego.iot.client.relay.Relay;
 import io.github.vm.patlego.iot.client.threads.MThreadState;
 
@@ -17,17 +17,12 @@ public class PIRSensor extends MThread {
 
     private GpioController gpio;
     private GpioPinDigitalInput pirSensorPin;
-    
+
     private static final long SENSOR_TIMEOUT = 10000;
 
-    public PIRSensor(Config config) {
-        super(config);
+    public PIRSensor(ConfigReader configReader) {
+        super(configReader);
         this.state = MThreadState.INITIALIZED;
-    }
-
-    private void init() {
-        this.gpio = GpioInstance.getInstance();
-        pirSensorPin = gpio.provisionDigitalInputPin(RaspiPin.GPIO_07, PinPullResistance.PULL_DOWN);
     }
 
     @Override
@@ -36,10 +31,12 @@ public class PIRSensor extends MThread {
             this.state = MThreadState.RUNNING;
 
             // Incase the program stopped allow for a clean start
-            init();
+            this.gpio = GpioInstance.getInstance();
+            pirSensorPin = gpio.provisionDigitalInputPin(RaspiPin.GPIO_07, PinPullResistance.PULL_DOWN);
 
-            while (Boolean.TRUE.equals(this.keepRunning())) {
+            while (true) {
                 if (pirSensorPin.isHigh()) {
+                    Config config = this.getConfig();
                     Relay relay = getRelay(config.getSystem());
                     CloseableHttpResponse response = (CloseableHttpResponse) relay.execute(config, null);
 
@@ -69,7 +66,7 @@ public class PIRSensor extends MThread {
     }
 
     @Override
-    public String getModule() {
-        return this.config.getModule();
+    public final String getModule() {
+        return "Basement Living Room";
     }
 }

@@ -10,6 +10,7 @@
   <artifactId>server</artifactId>
   <packaging>pom</packaging>
   <name>IoT Server</name>
+
   <properties>
     <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
     <aries.jpa.version>2.7.2</aries.jpa.version>
@@ -22,7 +23,9 @@
     <core.version>1.0-SNAPSHOT</core.version>
     <jackson.version>2.12.3</jackson.version>
     <hibernate-types.version>2.10.3</hibernate-types.version>
+    <jsonpath.version>2.5.0</jsonpath.version>
   </properties>
+
   <build>
     <pluginManagement>
       <plugins>
@@ -154,6 +157,11 @@
         <groupId>com.fasterxml.jackson.datatype</groupId>
         <artifactId>jackson-datatype-jsr310</artifactId>
         <version>${jackson.version}</version>
+      </dependency>
+      <dependency>
+        <groupId>com.jayway.jsonpath</groupId>
+        <artifactId>json-path</artifactId>
+        <version>${jsonpath.version}</version>
       </dependency>
     </dependencies>
   </dependencyManagement>

@@ -1,7 +1,5 @@
 package io.github.vm.patlego.iot.server.dao.tables;
 
-import java.util.Optional;
-
 import io.github.vm.patlego.iot.server.dao.tables.config.Config;
 import io.github.vm.patlego.iot.server.dao.tables.config.ConfigSystem;
 
@@ -10,7 +8,8 @@ public class MainConfig implements Config {
 
     private String module;
     private String thread;
-    private Boolean enable;
+    private Boolean logEntry;
+    private Boolean enableSms;
     private MainSystem system;
 
     @Override
@@ -26,11 +25,6 @@ public class MainConfig implements Config {
     @Override
     public ConfigSystem getSystem() {
         return this.system;
-    }
-
-    @Override
-    public boolean isEnabled() {
-        return Optional.ofNullable(this.enable).orElse(Boolean.FALSE);
     }
 
     @Override
@@ -54,9 +48,13 @@ public class MainConfig implements Config {
     }
 
     @Override
-    public void setIsEnabled(boolean isEnabled) {
-       this.enable = isEnabled;
-        
+    public Boolean enableDBLogging() {
+        return this.logEntry;
+    }
+
+    @Override
+    public Boolean enableSms() {
+       return this.enableSms;
     }
 
 }

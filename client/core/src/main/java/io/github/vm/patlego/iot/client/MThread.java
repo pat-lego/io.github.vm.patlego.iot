@@ -7,6 +7,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import io.github.vm.patlego.iot.client.config.Config;
+import io.github.vm.patlego.iot.client.config.ConfigReader;
 import io.github.vm.patlego.iot.client.config.ConfigSystem;
 import io.github.vm.patlego.iot.client.relay.Relay;
 import io.github.vm.patlego.iot.client.relay.RelayInstantiationException;
@@ -17,14 +18,14 @@ public abstract class MThread implements Runnable {
     protected MThreadState state = MThreadState.INITIALIZED;
     protected int sleepTime = 50;
     protected Logger logger = LoggerFactory.getLogger(this.getClass());
-    protected Config config;
+    protected ConfigReader configReader;
     
-    protected MThread(Config config) {
-        if (config == null) {
+    protected MThread(ConfigReader configReader) {
+        if (configReader == null) {
             throw new IllegalArgumentException("Cannot provide a null config object to the MThread");
         }
 
-        this.config = config;
+        this.configReader = configReader;
     }
 
     public abstract String getModule();
@@ -45,12 +46,7 @@ public abstract class MThread implements Runnable {
         return this.state;
     }
 
-    public void updateConfig(Config config) {
-        this.config = config;
-
-    }
-
-    public Boolean keepRunning() {
-        return this.config.isEnabled();
+    public Config getConfig() throws Exception {
+        return this.configReader.getConfigs().stream().filter(c -> c.getModule().equals(this.getModule())).findFirst().orElse(null);
     }
 }

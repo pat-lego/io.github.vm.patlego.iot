@@ -20,12 +20,6 @@ public interface Config {
      */
     public ConfigSystem getSystem();
 
-    /**
-     * Determines if this module is enabled for the given system
-     * @return
-     */
-    public boolean isEnabled();
-
     public boolean equals(Object a);
 
     public int hashCode();

@@ -28,11 +28,6 @@ public class MainConfig implements Config {
     }
 
     @Override
-    public boolean isEnabled() {
-        return Optional.ofNullable(this.enabled).orElse(Boolean.FALSE);
-    }
-
-    @Override
     public int hashCode() {
         int hash = 7;
 
