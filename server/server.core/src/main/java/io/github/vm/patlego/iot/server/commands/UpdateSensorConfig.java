@@ -44,7 +44,6 @@ public class UpdateSensorConfig implements Action {
             return "The given id did not return any results in the system";
         }
         
-        jsonPath = String.format("$%s", jsonPath);
         List<String> results = JsonPath.using(conf).parse(sensorConfig.getConfig()).read(jsonPath);
 
         if (results.isEmpty()) {

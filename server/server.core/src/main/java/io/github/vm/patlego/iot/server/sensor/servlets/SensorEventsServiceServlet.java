@@ -54,8 +54,9 @@ public class SensorEventsServiceServlet implements SensorEventService {
         Config sensorConfig = SensorConfig
                 .toConfig(this.sensorConfigDS.getConfig(event.getSensorConfigId()).getConfig());
 
+        event.setTime(Timestamp.valueOf(LocalDateTime.now(ZoneId.of("America/New_York"))));
+        
         if (Boolean.TRUE.equals(sensorConfig.enableSms())) {
-            event.setTime(Timestamp.valueOf(LocalDateTime.now(ZoneId.of("America/New_York"))));
             SMSMessage smsMessage = new SMSMessage() {
 
                 @Override
