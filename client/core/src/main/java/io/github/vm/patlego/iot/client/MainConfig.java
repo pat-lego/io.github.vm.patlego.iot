@@ -1,6 +1,6 @@
 package io.github.vm.patlego.iot.client;
 
-import java.util.Optional;
+import com.google.gson.GsonBuilder;
 
 import io.github.vm.patlego.iot.client.config.Config;
 import io.github.vm.patlego.iot.client.config.ConfigSystem;
@@ -9,7 +9,6 @@ public class MainConfig implements Config {
 
     private String module;
     private String thread;
-    private Boolean enabled;
     private MainConfigSystem system;
 
     @Override
@@ -45,6 +44,10 @@ public class MainConfig implements Config {
         }
 
         return false;
+    }
+
+    public String toString() {
+        return new GsonBuilder().setPrettyPrinting().create().toJson(this);
     }
 
 }

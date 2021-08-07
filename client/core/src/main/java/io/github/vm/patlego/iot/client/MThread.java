@@ -47,6 +47,6 @@ public abstract class MThread implements Runnable {
     }
 
     public Config getConfig() throws Exception {
-        return this.configReader.getConfigs().stream().filter(c -> c.getModule().equals(this.getClassPath())).findFirst().orElse(null);
+        return this.configReader.getConfigs().stream().filter(c -> c.getThread().equals(this.getClassPath())).findFirst().orElse(null);
     }
 }
