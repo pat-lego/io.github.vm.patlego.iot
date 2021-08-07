@@ -24,8 +24,8 @@ public abstract class ThreadManager {
         for (Config config : configs) {
             if (threads.get(config.getThread()) == null) {
                 Class<MThread> mThreadClass = (Class<MThread>) Class.forName(config.getThread());
-                Constructor<MThread> mThreadConstructor = mThreadClass.getConstructor(Config.class);
-                MThread mThread = mThreadConstructor.newInstance(config);
+                Constructor<MThread> mThreadConstructor = mThreadClass.getConstructor(ConfigReader.class);
+                MThread mThread = mThreadConstructor.newInstance(configReader);
 
                 MThreadDTO mThreadDTO = new MThreadDTO();
                 mThreadDTO.setmThread(mThread);
