@@ -14,6 +14,14 @@ document.getElementById("password").addEventListener("keyup", (event) => {
     }
 });
 
+document.getElementById("show-pwd").addEventListener('mousedown', (event) => {
+    document.getElementById("password").type = "text";
+});
+
+document.getElementById("show-pwd").addEventListener('mouseup', (event) => {
+    document.getElementById("password").type = "password";
+});
+
 function login() {
     var failedAuth = document.getElementById('failed-auth');
     axios({

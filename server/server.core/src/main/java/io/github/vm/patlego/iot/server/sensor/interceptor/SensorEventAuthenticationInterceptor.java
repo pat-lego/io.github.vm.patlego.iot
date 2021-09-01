@@ -28,7 +28,7 @@ public class SensorEventAuthenticationInterceptor extends AbstractPhaseIntercept
     private static final String AUTH_HEADER = "Authorization";
 
     public SensorEventAuthenticationInterceptor(Authentication<Jwt> auth) {
-        super(Phase.INVOKE);
+        super(Phase.PRE_INVOKE);
 
         this.auth = auth;
     }
