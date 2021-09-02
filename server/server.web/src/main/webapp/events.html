@@ -4,9 +4,12 @@
     <title>IoT Events Page</title>
     <link href="https://unpkg.com/tailwindcss@^2/dist/tailwind.min.css" rel="stylesheet">
     <script src="https://unpkg.com/vue@3.1.1/dist/vue.global.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/3.5.1/chart.min.js"></script>
     <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
     <script src="https://unpkg.com/moment@2.29.1/min/moment.min.js"></script>
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css" integrity="sha512-iBBXm8fW90+nuLcSKlbmrPcLa0OT92xO1BIsZ+ywDWZCvqsWgccV3gFoRBv0z+8dLJgyAHIhR35VZc2oM/gI1w==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css"
+        integrity="sha512-iBBXm8fW90+nuLcSKlbmrPcLa0OT92xO1BIsZ+ywDWZCvqsWgccV3gFoRBv0z+8dLJgyAHIhR35VZc2oM/gI1w=="
+        crossorigin="anonymous" referrerpolicy="no-referrer" />
 </head>
 
 <body>
@@ -17,7 +20,8 @@
         <div class="flex w-full justify-center">
             <div class="flex flex-row w-3/4 justify-end">
                 <label class="pr-4" for="search">Search:</label>
-                <input v-model="search" class="border-b-2 focus:outline-none focus:border-blue-300 focus:border-b-0" type="text" id="search" placeholder="Search events">
+                <input v-model="search" class="border-b-2 focus:outline-none focus:border-blue-300 focus:border-b-0"
+                    type="text" id="search" placeholder="Search events">
             </div>
         </div>
         <div class="flex w-full items-center justify-center">
@@ -25,24 +29,35 @@
                 <caption class="p-6">Sensor Event Information</caption>
                 <thead class="flex w-full pb-4">
                     <tr class="flex w-full items-center justify-between">
-                        <th class="w-1/6" v-on:click="sort('sensorId')"><span class="pr-1">Sensor ID</span><i class="fas fa-caret-up"></i><i class="fas fa-caret-down"></i></th>
-                        <th class="w-1/3" v-on:click="sort('time')"><span class="pr-1">Time</span><i class="fas fa-caret-up"><i class="fas fa-caret-down"></i></th>
-                        <th class="w-1/6" v-on:click="sort('location')"><span class="pr-1">Location</span><i class="fas fa-caret-up"><i class="fas fa-caret-down"></i></th>
-                        <th class="w-1/6" v-on:click="sort('type')"><span class="pr-1">Type</span><i class="fas fa-caret-up"><i class="fas fa-caret-down"></i></th>
-                        <th class="hidden md:inline w-1/6" v-on:click="sort('thread')"><span class="pr-1">Thread</span><i class="fas fa-caret-up"><i class="fas fa-caret-down"></i></th>
+                        <th class="w-1/6" v-on:click="sort('sensorId')"><span class="pr-1">Sensor ID</span><i
+                                class="fas fa-caret-up"></i><i class="fas fa-caret-down"></i></th>
+                        <th class="w-1/3" v-on:click="sort('time')"><span class="pr-1">Time</span><i
+                                class="fas fa-caret-up"><i class="fas fa-caret-down"></i></th>
+                        <th class="w-1/6" v-on:click="sort('location')"><span class="pr-1">Location</span><i
+                                class="fas fa-caret-up"><i class="fas fa-caret-down"></i></th>
+                        <th class="w-1/6" v-on:click="sort('type')"><span class="pr-1">Type</span><i
+                                class="fas fa-caret-up"><i class="fas fa-caret-down"></i></th>
+                        <th class="hidden md:inline w-1/6" v-on:click="sort('thread')"><span
+                                class="pr-1">Thread</span><i class="fas fa-caret-up"><i class="fas fa-caret-down"></i>
+                        </th>
                     </tr>
                 </thead>
-                <tbody class="flex flex-col w-full h-48 md:h-96 overflow-y-scroll">
+                <tbody class="flex flex-col w-full h-96 overflow-y-scroll">
                     <tr class="flex w-full p-2 pb-4 hover:bg-blue-100 items-center justify-between border-b-2"
                         v-for="sensor in filteredRows" :key="sensor">
                         <td class="w-1/6 text-center">{{sensor.sensorId}}</td>
-                        <td class="w-1/3 break-words text-center">{{getDate(sensor.time)}}</td>
+                        <td class="w-1/3 break-words text-center">{{getDateTime(sensor.time)}}</td>
                         <td class="w-1/6 break-words text-center">{{sensor.location}}</td>
                         <td class="w-1/6 break-words text-center">{{sensor.type}}</td>
                         <td class="hidden md:inline w-1/6 break-words text-center">{{sensor.thread}}</td>
                     </tr>
                 </tbody>
             </table>
+        </div>
+        <div class="hidden md:flex items-center justify-center w-full">
+            <div class="flex items-center justify-center w-3/4 pt-20" >
+                <canvas id="basementChart" style="width:768px;height:400px"></canvas>
+            </div>
         </div>
     </div>
     <script src="/iot/patlego/events.js"></script>
