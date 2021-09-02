@@ -54,7 +54,7 @@
                 </tbody>
             </table>
         </div>
-        <div class="hidden md:flex items-center justify-center w-full">
+        <div v-if="sensordata && sensordata.length > 0" class="hidden md:flex items-center justify-center w-full">
             <div class="flex items-center justify-center w-3/4 pt-20" >
                 <canvas id="basementChart" style="width:768px;height:400px"></canvas>
             </div>
