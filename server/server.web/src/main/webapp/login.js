@@ -18,8 +18,16 @@ document.getElementById("show-pwd").addEventListener('mousedown', (event) => {
     document.getElementById("password").type = "text";
 });
 
+document.getElementById("show-pwd").addEventListener('touchstart', (event) => {
+    document.getElementById("password").type = "text";
+});
+
 document.getElementById("show-pwd").addEventListener('mouseup', (event) => {
     document.getElementById("password").type = "password";
+});
+
+document.getElementById("show-pwd").addEventListener('touchend', (event) => {
+    document.getElementById("password").type = "text";
 });
 
 function login() {
